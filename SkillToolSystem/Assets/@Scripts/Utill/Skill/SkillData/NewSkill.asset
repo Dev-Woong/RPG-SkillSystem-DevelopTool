@@ -12,14 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c8b4a06f2d518b48b9ac8b6e2aa3211, type: 3}
   m_Name: NewSkill
   m_EditorClassIdentifier: 
+  TargetLayer: 0
   skillName: 
-  coolDown: 0
+  coolTime: 0
   damage: 0
   hitCount: 0
   startSkillPoint: {x: 0, y: 0}
   skillRange: {x: 0, y: 0}
+  hp: 0
+  mp: 0
+  superArmor: 0
+  skillCasting: 0
+  castingTime: 0
+  onSkillMove: 0
   specialAbility: 0
-  skillTarget: 0
+  skillElement: 0
+  skillHitType: 0
   skillRangeType: 0
   knockBack: 0
   knockBackForce: {x: 0, y: 0}
@@ -28,3 +36,7 @@ MonoBehaviour:
   effectPos: {x: 0, y: 0}
   HitEffect: {fileID: 0}
   hitEffectPos: {x: 0, y: 0}
+  isCameraShake: 0
+  shakePower: 0
+  shakeDir: {x: 0, y: 0}
+  shakeDuration: 0

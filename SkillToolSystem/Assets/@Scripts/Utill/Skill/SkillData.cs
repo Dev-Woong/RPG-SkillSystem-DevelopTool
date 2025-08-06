@@ -39,7 +39,7 @@ public class SkillData : ScriptableObject
 
     [Header("스킬 정보")]
     public string skillName;
-    public float coolDown;
+    public float coolTime;
     public float damage;
     public int hitCount;
     public Vector2 startSkillPoint;
