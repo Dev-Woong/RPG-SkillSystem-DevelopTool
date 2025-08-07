@@ -60,6 +60,10 @@ public class SkillDataCustomEditor : Editor
             EditorGUILayout.PropertyField(serializedObject.FindProperty("skillSFX"));
             if (serializedObject.FindProperty("skillSFX") != null)
             {
+                if (GUILayout.Button("효과음 재생"))
+                {
+                    
+                }
 
             }
         }
