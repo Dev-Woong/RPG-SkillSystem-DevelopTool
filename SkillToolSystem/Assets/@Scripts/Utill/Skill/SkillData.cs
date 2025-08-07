@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum SkillHitType
@@ -5,7 +6,7 @@ public enum SkillHitType
     SingleTarget,
     MultiTarget
 }
-public enum SkillRangeType
+public enum SkillType
 {
     Melee,
     Range,
@@ -46,32 +47,45 @@ public enum SetBuffType
 public class SkillData : ScriptableObject
 {
     public SkillTargetLayer TargetLayer;
+    public Sprite skillIcon;
+    [TextArea]
+    public string skillDescription;
     public string skillName;
     public float coolTime;
     public float damage;
     public int hitCount;
-    public Vector2 startSkillPoint;
-    public Vector2 skillRange;
+    
+    public Vector2 startSkillPoint; // 시작 스킬 지점
+    public Vector2 skillRange; //  스킬 범위
+
+    // 스킬의 레벨시스템
+    public bool usingLevelSystem;
+    public int skillCurLevel;
+    public int skillMaxLevel;
+    public float levelIncreaseValue;
+    
     public float hp;
     public float mp;
     public bool superArmor;
     public bool skillCasting;
     public float castingTime;
-    public bool onSkillMove;
-    public SkillSpecialAbility specialAbility;
+    public bool canMove;
+    public string ProjectilePrefabName;
+    public float projectileForce;
     public SkillElement skillElement;
     public SkillHitType skillHitType;
-    public SkillRangeType skillRangeType;
+    public SkillType skillType;
+    public SkillSpecialAbility specialAbility;
     public SetDebuffType setDebuffType;
     public SetBuffType setBuffType; 
-    public bool knockBack;
+    public bool useKnockBack;
     public Vector2 knockBackForce;
     public AudioClip skillSFX;
-    public GameObject SkillEffect;
+    public string SkillEffectPrefabName;
     public Vector2 effectPos;
-    public GameObject HitEffect;
+    public string HitEffectPrefabName;
     public Vector2 hitEffectPos;
-    public bool isCameraShake;
+    public bool useCameraShake;
     public float shakePower;
     public Vector2 shakeDir;
     public float shakeDuration;
