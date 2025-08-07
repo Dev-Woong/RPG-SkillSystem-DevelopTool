@@ -30,6 +30,17 @@ public enum SkillTargetLayer
     Player,
     Enemy
 }
+public enum SetDebuffType
+{
+    Stun,
+    Forzen,
+    Burning
+}
+public enum SetBuffType
+{
+    ExampleBuff,
+    ExampleBuff2,
+}
 
 [CreateAssetMenu(fileName ="NewSkill", menuName = "Skills/SkillData")]
 public class SkillData : ScriptableObject
@@ -51,6 +62,8 @@ public class SkillData : ScriptableObject
     public SkillElement skillElement;
     public SkillHitType skillHitType;
     public SkillRangeType skillRangeType;
+    public SetDebuffType setDebuffType;
+    public SetBuffType setBuffType; 
     public bool knockBack;
     public Vector2 knockBackForce;
     public AudioClip skillSFX;

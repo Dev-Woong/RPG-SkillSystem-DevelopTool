@@ -1,4 +1,7 @@
+using System;
+using System.Reflection;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 [CustomEditor(typeof(SkillData))]
 public class SkillDataCustomEditor : Editor
@@ -26,6 +29,15 @@ public class SkillDataCustomEditor : Editor
             EditorGUILayout.PropertyField(serializedObject.FindProperty("skillRangeType"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("skillElement"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("specialAbility"));
+            switch (skill.specialAbility)
+            {
+                case SkillSpecialAbility.Buff:
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("setBuffType"));
+                    break;
+                case SkillSpecialAbility.DeBuff:
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("setDebuffType"));
+                    break;
+            }
         }
 
         EditorGUILayout.Space();
@@ -62,9 +74,19 @@ public class SkillDataCustomEditor : Editor
             {
                 if (GUILayout.Button("효과음 재생"))
                 {
-                    
+                    if (Application.isPlaying == true)
+                    {
+                        Debug.LogWarning("플레이모드에선 재생할 수 없습니다.");
+                        return;
+                    }
+                    if (Application.isPlaying == false && skill.skillSFX == null)
+                    {
+                        Debug.LogWarning($"skillSFX가 {skill.skillSFX} 입니다.");
+                        return;
+                    }
+                    PlayClip(skill.skillSFX);
+                    Debug.Log($"효과음 재생 {skill.skillSFX}");
                 }
-
             }
         }
 
@@ -87,5 +109,20 @@ public class SkillDataCustomEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("skillRange"));
 
         serializedObject.ApplyModifiedProperties();
+    }
+    private static MethodInfo playClipMethod;
+    private static void PlayClip(AudioClip clip)
+    {
+#if UNITY_EDITOR
+        if (clip == null) return;
+
+        if (playClipMethod == null)
+        {
+            var audioUtil = typeof(AudioImporter).Assembly.GetType("UnityEditor.AudioUtil");
+            playClipMethod = audioUtil.GetMethod("PlayClip", BindingFlags.Static | BindingFlags.Public, null, new Type[] { typeof(AudioClip) }, null);
+        }
+
+        playClipMethod?.Invoke(null, new object[] { clip });
+#endif
     }
 }

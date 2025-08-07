@@ -25,10 +25,12 @@ MonoBehaviour:
   skillCasting: 0
   castingTime: 0
   onSkillMove: 0
-  specialAbility: 0
+  specialAbility: 2
   skillElement: 0
   skillHitType: 0
-  skillRangeType: 0
+  skillRangeType: 1
+  setDebuffType: 0
+  setBuffType: 0
   knockBack: 0
   knockBackForce: {x: 0, y: 0}
   skillSFX: {fileID: 0}
