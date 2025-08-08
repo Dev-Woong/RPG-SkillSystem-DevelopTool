@@ -54,16 +54,12 @@ public class SkillData : ScriptableObject
     public float coolTime;
     public float damage;
     public int hitCount;
-    
-    public Vector2 startSkillPoint; // 시작 스킬 지점
-    public Vector2 skillRange; //  스킬 범위
-
-    // 스킬의 레벨시스템
+    public Vector2 startSkillPoint; 
+    public Vector2 skillRange;
     public bool usingLevelSystem;
     public int skillCurLevel;
     public int skillMaxLevel;
     public float levelIncreaseValue;
-    
     public float hp;
     public float mp;
     public bool superArmor;

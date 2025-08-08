@@ -36,8 +36,8 @@ MonoBehaviour:
   skillElement: 0
   skillHitType: 0
   skillType: 1
-  specialAbility: 1
-  setDebuffType: 0
+  specialAbility: 2
+  setDebuffType: 2
   setBuffType: 0
   useKnockBack: 0
   knockBackForce: {x: 0, y: 0}

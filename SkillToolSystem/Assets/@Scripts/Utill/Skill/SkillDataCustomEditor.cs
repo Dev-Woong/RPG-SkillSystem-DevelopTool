@@ -320,7 +320,7 @@ public class SkillDataCustomEditor : Editor
                         EditorGUILayout.PropertyField(setDebuffType);
                     }
                     EditorGUILayout.Space();
-                    EditorGUILayout.LabelField("스킬 범위", EditorStyles.boldLabel);
+                    EditorGUILayout.LabelField("투사체 프리팹 정보", EditorStyles.miniBoldLabel);
                     EditorGUILayout.PropertyField(ProjectilePrefabName);
                     EditorGUILayout.PropertyField(projectileForce);
                     EditorGUILayout.Space();
