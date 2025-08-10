@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9c8b4a06f2d518b48b9ac8b6e2aa3211, type: 3}
-  m_Name: NewSkill
+  m_Name: NewSkillData
   m_EditorClassIdentifier: 
   TargetLayer: 0
   skillIcon: {fileID: 0}
@@ -35,9 +35,9 @@ MonoBehaviour:
   projectileForce: 0
   skillElement: 0
   skillHitType: 0
-  skillType: 1
-  specialAbility: 2
-  setDebuffType: 2
+  skillType: 0
+  specialAbility: 0
+  setDebuffType: 0
   setBuffType: 0
   useKnockBack: 0
   knockBackForce: {x: 0, y: 0}

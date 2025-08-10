@@ -8,6 +8,7 @@ public enum SkillHitType
 }
 public enum SkillType
 {
+    All,
     Melee,
     Range,
     AOE

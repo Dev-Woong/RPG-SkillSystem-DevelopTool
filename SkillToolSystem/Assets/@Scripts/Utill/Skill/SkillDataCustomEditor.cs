@@ -125,6 +125,7 @@ public class SkillDataCustomEditor : Editor
     #endregion
     private void OnEnable()
     {
+        
         skillType = serializedObject.FindProperty("skillType");
         skillDescription = serializedObject.FindProperty("skillDescription");
         skillIcon = serializedObject.FindProperty("skillIcon");
