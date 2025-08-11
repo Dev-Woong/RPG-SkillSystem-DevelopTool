@@ -2,21 +2,21 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-public class SkillEditorWindow : EditorWindow
+public class AttackEditorWindow : EditorWindow
 {
     private Vector2 listScrollPos;
     private Vector2 inspectorScrollPos;
 
     private string searchText = "";
-    private SkillData[] allSkills;
-    private SkillData selectedSkill;
+    private AttackData[] allAttackDatas;
+    private AttackData selectedAttackData;
 
-    private SkillType selectedFilter = SkillType.All; // 필터 상태
+    private AttackType selectedFilter = AttackType.All; // 필터 상태
 
-    [MenuItem("Window/Skill Tool")]
+    [MenuItem("Window/AttackData Tool")]
     public static void ShowWindow()
     {
-        GetWindow<SkillEditorWindow>("Skill Tool");
+        GetWindow<AttackEditorWindow>("AttackData Tool");
     }
 
     private void OnEnable()
@@ -26,8 +26,8 @@ public class SkillEditorWindow : EditorWindow
 
     private void LoadAllSkills()
     {
-        string[] guids = AssetDatabase.FindAssets("t:SkillData");
-        allSkills = guids.Select(g => AssetDatabase.LoadAssetAtPath<SkillData>(AssetDatabase.GUIDToAssetPath(g))).ToArray();
+        string[] guids = AssetDatabase.FindAssets("t:AttackData");
+        allAttackDatas = guids.Select(g => AssetDatabase.LoadAssetAtPath<AttackData>(AssetDatabase.GUIDToAssetPath(g))).ToArray();
     }
 
     private void OnGUI()
@@ -39,7 +39,7 @@ public class SkillEditorWindow : EditorWindow
 
         // 상단 버튼
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("새 스킬 만들기", GUILayout.Height(25)))
+        if (GUILayout.Button("새 데이터 만들기", GUILayout.Height(25)))
             CreateNewSkill();
 
         if (GUILayout.Button("새로고침", GUILayout.Width(80), GUILayout.Height(25)))
@@ -50,7 +50,7 @@ public class SkillEditorWindow : EditorWindow
 
         // 카테고리 필터
         GUILayout.BeginHorizontal();
-        foreach (SkillType filterType in System.Enum.GetValues(typeof(SkillType)))
+        foreach (AttackType filterType in System.Enum.GetValues(typeof(AttackType)))
         {
             if (GUILayout.Toggle(selectedFilter == filterType, filterType.ToString(), "Button"))
                 selectedFilter = filterType;
@@ -65,15 +65,15 @@ public class SkillEditorWindow : EditorWindow
 
         // 스킬 리스트
         listScrollPos = GUILayout.BeginScrollView(listScrollPos);
-        foreach (var skill in allSkills.Where(s => IsSkillMatchFilter(s) &&
+        foreach (var skill in allAttackDatas.Where(s => IsSkillMatchFilter(s) &&
                                                    (string.IsNullOrEmpty(searchText) || s.name.ToLower().Contains(searchText.ToLower()))))
         {
             GUILayout.BeginHorizontal();
 
             // 선택 버튼
-            if (GUILayout.Button(skill.name, (selectedSkill == skill) ? EditorStyles.toolbarButton : EditorStyles.miniButton))
+            if (GUILayout.Button(skill.name, (selectedAttackData == skill) ? EditorStyles.toolbarButton : EditorStyles.miniButton))
             {
-                selectedSkill = skill;
+                selectedAttackData = skill;
                 EditorGUIUtility.PingObject(skill);
             }
 
@@ -88,7 +88,7 @@ public class SkillEditorWindow : EditorWindow
                     AssetDatabase.SaveAssets();
                     LoadAllSkills();
 
-                    if (selectedSkill == skill) selectedSkill = null;
+                    if (selectedAttackData == skill) selectedAttackData = null;
                 }
             }
             GUI.color = Color.white;
@@ -105,9 +105,9 @@ public class SkillEditorWindow : EditorWindow
         EditorGUILayout.LabelField("선택된 스킬", EditorStyles.boldLabel);
         inspectorScrollPos = GUILayout.BeginScrollView(inspectorScrollPos);
 
-        if (selectedSkill != null)
+        if (selectedAttackData != null)
         {
-            Editor editor = Editor.CreateEditor(selectedSkill);
+            Editor editor = Editor.CreateEditor(selectedAttackData);
             if (editor != null) editor.OnInspectorGUI();
         }
         else
@@ -121,15 +121,15 @@ public class SkillEditorWindow : EditorWindow
         GUILayout.EndHorizontal();
     }
 
-    private bool IsSkillMatchFilter(SkillData skill)
+    private bool IsSkillMatchFilter(AttackData skill)
     {
-        if (selectedFilter == SkillType.All) return true;
-        return skill.skillType == selectedFilter;
+        if (selectedFilter == AttackType.All) return true;
+        return skill.attackType == selectedFilter;
     }
 
     private void CreateNewSkill()
     {
-        SkillData newSkill = ScriptableObject.CreateInstance<SkillData>();
+        AttackData newSkill = ScriptableObject.CreateInstance<AttackData>();
         string path = EditorUtility.SaveFilePanelInProject("새 스킬 생성", "NewSkillData", "asset", "스킬 데이터를 저장할 위치를 선택하세요");
         if (!string.IsNullOrEmpty(path))
         {

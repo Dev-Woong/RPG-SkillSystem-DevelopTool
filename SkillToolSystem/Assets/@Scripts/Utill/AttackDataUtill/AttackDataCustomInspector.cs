@@ -1,28 +1,33 @@
 using System;
 using System.Reflection;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-[CustomEditor(typeof(SkillData))]
-public class SkillDataCustomEditor : Editor
+[CustomEditor(typeof(AttackData))]
+public class AttackDataCustomInspector : Editor
 {
     private bool showBasic = true;
     private bool showCost = true;
     private bool showEffect = true;
     private bool showCamera = true;
     #region PropertyField
-    SerializedProperty skillType; // 스킬타입 대전제
+    SerializedProperty attackType; // 스킬타입 대전제
     SerializedProperty TargetLayer; // 스킬 타겟레이어
 
     // ** 스킬 기본 정보 ** // 
     //- 스킬 이름
-    SerializedProperty skillName;
+    SerializedProperty attackName;
+
+    //- 공격자 무기타입
+
+    SerializedProperty weaponType;
 
     //- 스킬 설명
-    SerializedProperty skillDescription;
+    SerializedProperty attackDescription;
 
     //- 스킬 아이콘
-    SerializedProperty skillIcon;
+    SerializedProperty attackIcon;
 
     //- 쿨타임
     SerializedProperty coolTime;
@@ -34,10 +39,10 @@ public class SkillDataCustomEditor : Editor
     SerializedProperty hitCount;
 
     // 다중, 단일타겟
-    SerializedProperty skillHitType;
+    SerializedProperty attackHitType;
 
     // 공격 속성
-    SerializedProperty skillElement;
+    SerializedProperty attackElement;
 
     // 스킬 특수 능력
     SerializedProperty specialAbility;
@@ -49,8 +54,8 @@ public class SkillDataCustomEditor : Editor
     SerializedProperty setDebuffType;
 
     // 스킬 범위
-    SerializedProperty startSkillPoint;
-    SerializedProperty skillRange;
+    SerializedProperty startAttackPoint;
+    SerializedProperty attackRange;
 
     // ----------------------------------------------
 
@@ -60,13 +65,13 @@ public class SkillDataCustomEditor : Editor
     SerializedProperty usingLevelSystem;
 
     //- 스킬 현재레벨
-    SerializedProperty skillCurLevel;
+    SerializedProperty attackCurLevel;
 
     //- 스킬 최대레벨
-    SerializedProperty skillMaxLevel;
+    SerializedProperty attackMaxLevel;
 
     //- 스킬 레벨당 데미지 상승치
-    SerializedProperty skillIncreaseValue;
+    SerializedProperty attackIncreaseValue;
 
     // ----------------------------------------------
 
@@ -85,8 +90,8 @@ public class SkillDataCustomEditor : Editor
     SerializedProperty knockBackForce;
 
     // ** 스킬 캐스팅
-    SerializedProperty doSkillCasting;
-    SerializedProperty skillCastingTime;
+    SerializedProperty doAttackCasting;
+    SerializedProperty attackCastingTime;
 
     // ** 투사체
     SerializedProperty ProjectilePrefabName;
@@ -95,11 +100,11 @@ public class SkillDataCustomEditor : Editor
     // ** 스킬 연출 ** // 
     
     //- 스킬 시전 사운드
-    SerializedProperty skillSFX;
+    SerializedProperty attackSFX;
 
     //- 스킬 이펙트
-    SerializedProperty skillEffectName;
-    SerializedProperty skillEffectPos;
+    SerializedProperty attackEffectName;
+    SerializedProperty attackEffectPos;
 
     //- 타격 이펙트
     SerializedProperty hitEffectName;
@@ -125,27 +130,29 @@ public class SkillDataCustomEditor : Editor
     #endregion
     private void OnEnable()
     {
+
         
-        skillType = serializedObject.FindProperty("skillType");
-        skillDescription = serializedObject.FindProperty("skillDescription");
-        skillIcon = serializedObject.FindProperty("skillIcon");
+        attackType = serializedObject.FindProperty("attackType");
+        weaponType = serializedObject.FindProperty("weaponType");
+        attackDescription = serializedObject.FindProperty("attackDescription");
+        attackIcon = serializedObject.FindProperty("AttackIcon");
         TargetLayer = serializedObject.FindProperty("TargetLayer");
-        skillName = serializedObject.FindProperty("skillName");
+        attackName = serializedObject.FindProperty("attackName");
         coolTime = serializedObject.FindProperty("coolTime");
         damage = serializedObject.FindProperty("damage");
         hitCount = serializedObject.FindProperty("hitCount");
-        skillHitType = serializedObject.FindProperty("skillHitType");
-        skillElement = serializedObject.FindProperty("skillElement");
+        attackHitType = serializedObject.FindProperty("attackHitType");
+        attackElement = serializedObject.FindProperty("attackElement");
         specialAbility = serializedObject.FindProperty("specialAbility");
         setBuffType = serializedObject.FindProperty("setBuffType");
         setDebuffType = serializedObject.FindProperty("setDebuffType");
-        startSkillPoint = serializedObject.FindProperty("startSkillPoint");
-        skillRange = serializedObject.FindProperty("skillRange");
+        startAttackPoint = serializedObject.FindProperty("startAttackPoint");
+        attackRange = serializedObject.FindProperty("attackRange");
 
         usingLevelSystem = serializedObject.FindProperty("usingLevelSystem");
-        skillCurLevel = serializedObject.FindProperty("skillCurLevel");
-        skillMaxLevel = serializedObject.FindProperty("skillMaxLevel");
-        skillIncreaseValue = serializedObject.FindProperty("levelIncreaseValue");
+        attackCurLevel = serializedObject.FindProperty("attackCurLevel");
+        attackMaxLevel = serializedObject.FindProperty("attackMaxLevel");
+        attackIncreaseValue = serializedObject.FindProperty("levelIncreaseValue");
 
         hpCost = serializedObject.FindProperty("hp");
         mpCost = serializedObject.FindProperty("mp");
@@ -155,15 +162,15 @@ public class SkillDataCustomEditor : Editor
         useKnockBack = serializedObject.FindProperty("useKnockBack");
         knockBackForce = serializedObject.FindProperty("knockBackForce");
 
-        doSkillCasting = serializedObject.FindProperty("skillCasting");
-        skillCastingTime = serializedObject.FindProperty("castingTime");
+        doAttackCasting = serializedObject.FindProperty("attackCasting");
+        attackCastingTime = serializedObject.FindProperty("castingTime");
 
         ProjectilePrefabName = serializedObject.FindProperty("ProjectilePrefabName");
         projectileForce = serializedObject.FindProperty("projectileForce");
 
-        skillSFX = serializedObject.FindProperty("skillSFX");
-        skillEffectName = serializedObject.FindProperty("SkillEffectPrefabName");
-        skillEffectPos = serializedObject.FindProperty("effectPos");
+        attackSFX = serializedObject.FindProperty("attackSFX");
+        attackEffectName = serializedObject.FindProperty("attackEffectPrefabName");
+        attackEffectPos = serializedObject.FindProperty("effectPos");
         hitEffectName = serializedObject.FindProperty("HitEffectPrefabName");
         hitEffectPos = serializedObject.FindProperty("hitEffectPos");
 
@@ -180,54 +187,57 @@ public class SkillDataCustomEditor : Editor
             return;
         }
 
-        SkillData skill = (SkillData)target;
-        if (skill == null)
+        AttackData aData = (AttackData)target;
+        if (aData == null)
         {
-            Debug.LogError("skill is null!");
+            Debug.LogError("attackData is null!");
             return;
         }
         serializedObject.Update();
         EditorGUILayout.Space();
 
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("skillType"));
-        switch (skill.skillType)
+        EditorGUILayout.PropertyField(attackType);
+        switch (aData.attackType)
         {
-            case SkillType.Melee:
+            //근접 공격 타입 인스펙터
+            #region MeleeAttackType
+            case AttackType.Melee:
                 showBasic = EditorGUILayout.Foldout(showBasic, "근접타입 기본 정보", true);
                 if (showBasic)
                 {
                     EditorGUILayout.PropertyField(TargetLayer);
-                    EditorGUILayout.PropertyField(skillIcon);
-                    EditorGUILayout.PropertyField(skillName);
-                    EditorGUILayout.PropertyField(skillDescription);
+                    EditorGUILayout.PropertyField(weaponType);
+                    EditorGUILayout.PropertyField(attackIcon);
+                    EditorGUILayout.PropertyField(attackName);
+                    EditorGUILayout.PropertyField(attackDescription);
                     EditorGUILayout.PropertyField(coolTime);
                     EditorGUILayout.PropertyField(damage);
                     EditorGUILayout.PropertyField(hitCount);
-                    EditorGUILayout.PropertyField(skillHitType);
-                    EditorGUILayout.PropertyField(skillElement);
+                    EditorGUILayout.PropertyField(attackHitType);
+                    EditorGUILayout.PropertyField(attackElement);
                     EditorGUILayout.PropertyField(specialAbility);
-                    if (skill.specialAbility == SkillSpecialAbility.Buff)
+                    if (aData.specialAbility == AttackSpecialAbility.Buff)
                     {
                         EditorGUILayout.PropertyField(setBuffType);
                     }
-                    else if (skill.specialAbility == SkillSpecialAbility.DeBuff)
+                    else if (aData.specialAbility == AttackSpecialAbility.DeBuff)
                     {
                         EditorGUILayout.PropertyField(setDebuffType);
                     }
 
                     EditorGUILayout.Space();
 
-                    EditorGUILayout.LabelField("스킬 범위", EditorStyles.boldLabel);
-                    EditorGUILayout.PropertyField(startSkillPoint);
-                    EditorGUILayout.PropertyField(skillRange);
+                    EditorGUILayout.LabelField("공격 범위", EditorStyles.boldLabel);
+                    EditorGUILayout.PropertyField(startAttackPoint);
+                    EditorGUILayout.PropertyField(attackRange);
                     EditorGUILayout.Space();
                     EditorGUILayout.PropertyField(usingLevelSystem);
-                    if (skill.usingLevelSystem)
+                    if (aData.usingLevelSystem)
                     {
-                        EditorGUILayout.PropertyField(skillCurLevel);
-                        EditorGUILayout.PropertyField(skillMaxLevel);
-                        EditorGUILayout.LabelField("스킬 레벨당 데미지 증가값", EditorStyles.miniBoldLabel);
-                        EditorGUILayout.PropertyField(skillIncreaseValue);
+                        EditorGUILayout.PropertyField(attackCurLevel);
+                        EditorGUILayout.PropertyField(attackMaxLevel);
+                        EditorGUILayout.LabelField("공격데이터 레벨당 데미지 증가값", EditorStyles.miniBoldLabel);
+                        EditorGUILayout.PropertyField(attackIncreaseValue);
                     }
                 }
                 EditorGUILayout.Space();
@@ -239,7 +249,7 @@ public class SkillDataCustomEditor : Editor
                     EditorGUILayout.PropertyField(canMove);
                     EditorGUILayout.PropertyField(onSuperArmor);
                     EditorGUILayout.PropertyField(useKnockBack);
-                    if (skill.useKnockBack)
+                    if (aData.useKnockBack)
                     {
                         EditorGUILayout.PropertyField(knockBackForce);
                     }
@@ -248,18 +258,18 @@ public class SkillDataCustomEditor : Editor
                 showEffect = EditorGUILayout.Foldout(showEffect, "스킬 연출", true);
                 if (showEffect)
                 {
-                    EditorGUILayout.PropertyField(doSkillCasting);
-                    if (skill.skillCasting)
+                    EditorGUILayout.PropertyField(doAttackCasting);
+                    if (aData.attackCasting)
                     {
-                        EditorGUILayout.PropertyField(skillCastingTime);
+                        EditorGUILayout.PropertyField(attackCastingTime);
                     }
 
-                    EditorGUILayout.PropertyField(skillEffectName);
-                    EditorGUILayout.PropertyField(skillEffectPos);
+                    EditorGUILayout.PropertyField(attackEffectName);
+                    EditorGUILayout.PropertyField(attackEffectPos);
                     EditorGUILayout.PropertyField(hitEffectName);
                     EditorGUILayout.PropertyField(hitEffectPos);
-                    EditorGUILayout.PropertyField(skillSFX);
-                    if (skillSFX != null)
+                    EditorGUILayout.PropertyField(attackSFX);
+                    if (attackSFX != null)
                     {
                         if (GUILayout.Button("효과음 재생"))
                         {
@@ -268,13 +278,13 @@ public class SkillDataCustomEditor : Editor
                                 Debug.LogWarning("플레이모드에선 재생할 수 없습니다.");
                                 return;
                             }
-                            if (Application.isPlaying == false && skill.skillSFX == null)
+                            if (Application.isPlaying == false && aData.attackSFX == null)
                             {
-                                Debug.LogWarning($"skillSFX가 {skill.skillSFX} 입니다.");
+                                Debug.LogWarning($"attackSFX가 {aData.attackSFX} 입니다.");
                                 return;
                             }
-                            PlayClip(skill.skillSFX);
-                            Debug.Log($"효과음 재생 {skill.skillSFX}");
+                            OnEditorModePlayClip(aData.attackSFX);
+                            Debug.Log($"효과음 재생 {aData.attackSFX}");
                         }
                     }
                 }
@@ -284,7 +294,7 @@ public class SkillDataCustomEditor : Editor
                 if (showCamera)
                 {
                     EditorGUILayout.PropertyField(useCameraShake);
-                    if (skill.useCameraShake)
+                    if (aData.useCameraShake)
                     {
                         EditorGUILayout.PropertyField(shakeCameraForce);
                         EditorGUILayout.PropertyField(shakeCameraDir);
@@ -293,30 +303,30 @@ public class SkillDataCustomEditor : Editor
                 }
                 break;
 
-
-
-
-
-
-            case SkillType.Range:
+            #endregion 
+                
+            //원거리 공격 타입 인스펙터
+            #region RangeAttackCase
+            case AttackType.Range:
                 showBasic = EditorGUILayout.Foldout(showBasic, "투사체타입 기본 정보", true);
                 if (showBasic)
                 {
                     EditorGUILayout.PropertyField(TargetLayer);
-                    EditorGUILayout.PropertyField(skillIcon);
-                    EditorGUILayout.PropertyField(skillName);
-                    EditorGUILayout.PropertyField(skillDescription);
+                    EditorGUILayout.PropertyField(weaponType);
+                    EditorGUILayout.PropertyField(attackIcon);
+                    EditorGUILayout.PropertyField(attackName);
+                    EditorGUILayout.PropertyField(attackDescription);
                     EditorGUILayout.PropertyField(coolTime);
                     EditorGUILayout.PropertyField(damage);
                     EditorGUILayout.PropertyField(hitCount);
-                    EditorGUILayout.PropertyField(skillHitType);
-                    EditorGUILayout.PropertyField(skillElement);
+                    EditorGUILayout.PropertyField(attackHitType);
+                    EditorGUILayout.PropertyField(attackElement);
                     EditorGUILayout.PropertyField(specialAbility);
-                    if (skill.specialAbility == SkillSpecialAbility.Buff)
+                    if (aData.specialAbility == AttackSpecialAbility.Buff)
                     {
                         EditorGUILayout.PropertyField(setBuffType);
                     }
-                    else if (skill.specialAbility == SkillSpecialAbility.DeBuff)
+                    else if (aData.specialAbility == AttackSpecialAbility.DeBuff)
                     {
                         EditorGUILayout.PropertyField(setDebuffType);
                     }
@@ -326,12 +336,12 @@ public class SkillDataCustomEditor : Editor
                     EditorGUILayout.PropertyField(projectileForce);
                     EditorGUILayout.Space();
                     EditorGUILayout.PropertyField(usingLevelSystem);
-                    if (skill.usingLevelSystem)
+                    if (aData.usingLevelSystem)
                     {
-                        EditorGUILayout.PropertyField(skillCurLevel);
-                        EditorGUILayout.PropertyField(skillMaxLevel);
+                        EditorGUILayout.PropertyField(attackCurLevel);
+                        EditorGUILayout.PropertyField(attackMaxLevel);
                         EditorGUILayout.LabelField("스킬 레벨당 데미지 증가값", EditorStyles.miniBoldLabel);
-                        EditorGUILayout.PropertyField(skillIncreaseValue);
+                        EditorGUILayout.PropertyField(attackIncreaseValue);
                     }
                 }
                 
@@ -344,7 +354,7 @@ public class SkillDataCustomEditor : Editor
                     EditorGUILayout.PropertyField(mpCost);
                     EditorGUILayout.PropertyField(onSuperArmor);
                     EditorGUILayout.PropertyField(useKnockBack);
-                    if (skill.useKnockBack)
+                    if (aData.useKnockBack)
                     {
                         EditorGUILayout.PropertyField(knockBackForce);
                     }
@@ -354,19 +364,19 @@ public class SkillDataCustomEditor : Editor
                 showEffect = EditorGUILayout.Foldout(showEffect, "스킬 연출", true);
                 if (showEffect)
                 {
-                    EditorGUILayout.PropertyField(doSkillCasting);
-                    if (skill.skillCasting)
+                    EditorGUILayout.PropertyField(doAttackCasting);
+                    if (aData.attackCasting)
                     {
-                        EditorGUILayout.PropertyField(skillCastingTime);
+                        EditorGUILayout.PropertyField(attackCastingTime);
                     }
 
                     EditorGUILayout.PropertyField(canMove);
-                    EditorGUILayout.PropertyField(skillEffectName);
-                    EditorGUILayout.PropertyField(skillEffectPos);
+                    EditorGUILayout.PropertyField(attackEffectName);
+                    EditorGUILayout.PropertyField(attackEffectPos);
                     EditorGUILayout.PropertyField(hitEffectName);
                     EditorGUILayout.PropertyField(hitEffectPos);
-                    EditorGUILayout.PropertyField(skillSFX);
-                    if (skillSFX != null)
+                    EditorGUILayout.PropertyField(attackSFX);
+                    if (attackSFX != null)
                     {
                         if (GUILayout.Button("효과음 재생"))
                         {
@@ -375,13 +385,13 @@ public class SkillDataCustomEditor : Editor
                                 Debug.LogWarning("플레이모드에선 재생할 수 없습니다.");
                                 return;
                             }
-                            if (Application.isPlaying == false && skill.skillSFX == null)
+                            if (Application.isPlaying == false && aData.attackSFX == null)
                             {
-                                Debug.LogWarning($"skillSFX가 {skill.skillSFX} 입니다.");
+                                Debug.LogWarning($"skillSFX가 {aData.attackSFX} 입니다.");
                                 return;
                             }
-                            PlayClip(skill.skillSFX);
-                            Debug.Log($"효과음 재생 {skill.skillSFX}");
+                            OnEditorModePlayClip(aData.attackSFX);
+                            Debug.Log($"효과음 재생 {aData.attackSFX}");
                         }
                     }
                 }
@@ -391,7 +401,7 @@ public class SkillDataCustomEditor : Editor
                 if (showCamera)
                 {
                     EditorGUILayout.PropertyField(useCameraShake);
-                    if (skill.useCameraShake)
+                    if (aData.useCameraShake)
                     {
                         EditorGUILayout.PropertyField(shakeCameraForce);
                         EditorGUILayout.PropertyField(shakeCameraDir);
@@ -400,30 +410,30 @@ public class SkillDataCustomEditor : Editor
                 }
                 break;
 
+            #endregion
 
-
-
-
-
-            case SkillType.AOE:
+            //범위 공격 타입 인스펙터
+            #region AOEAttackType
+            case AttackType.AOE:
                 showBasic = EditorGUILayout.Foldout(showBasic, "AOE타입 기본 정보", true);
                 if (showBasic)
                 {
                     EditorGUILayout.PropertyField(TargetLayer);
-                    EditorGUILayout.PropertyField(skillIcon);
-                    EditorGUILayout.PropertyField(skillName);
-                    EditorGUILayout.PropertyField(skillDescription);
+                    EditorGUILayout.PropertyField(weaponType);
+                    EditorGUILayout.PropertyField(attackIcon);
+                    EditorGUILayout.PropertyField(attackName);
+                    EditorGUILayout.PropertyField(attackDescription);
                     EditorGUILayout.PropertyField(coolTime);
                     EditorGUILayout.PropertyField(damage);
                     EditorGUILayout.PropertyField(hitCount);
-                    EditorGUILayout.PropertyField(skillHitType);
-                    EditorGUILayout.PropertyField(skillElement);
+                    EditorGUILayout.PropertyField(attackHitType);
+                    EditorGUILayout.PropertyField(attackElement);
                     EditorGUILayout.PropertyField(specialAbility);
-                    if (skill.specialAbility == SkillSpecialAbility.Buff)
+                    if (aData.specialAbility == AttackSpecialAbility.Buff)
                     {
                         EditorGUILayout.PropertyField(setBuffType);
                     }
-                    else if (skill.specialAbility == SkillSpecialAbility.DeBuff)
+                    else if (aData.specialAbility == AttackSpecialAbility.DeBuff)
                     {
                         EditorGUILayout.PropertyField(setDebuffType);
                     }
@@ -431,16 +441,16 @@ public class SkillDataCustomEditor : Editor
                     EditorGUILayout.Space();
 
                     EditorGUILayout.LabelField("스킬 범위", EditorStyles.boldLabel);
-                    EditorGUILayout.PropertyField(startSkillPoint);
-                    EditorGUILayout.PropertyField(skillRange);
+                    EditorGUILayout.PropertyField(startAttackPoint);
+                    EditorGUILayout.PropertyField(attackRange);
                     EditorGUILayout.Space();
                     EditorGUILayout.PropertyField(usingLevelSystem);
-                    if (skill.usingLevelSystem)
+                    if (aData.usingLevelSystem)
                     {
-                        EditorGUILayout.PropertyField(skillCurLevel);
-                        EditorGUILayout.PropertyField(skillMaxLevel);
+                        EditorGUILayout.PropertyField(attackCurLevel);
+                        EditorGUILayout.PropertyField(attackMaxLevel);
                         EditorGUILayout.LabelField("스킬 레벨당 데미지 증가값", EditorStyles.miniBoldLabel);
-                        EditorGUILayout.PropertyField(skillIncreaseValue);
+                        EditorGUILayout.PropertyField(attackIncreaseValue);
                     }
                 }
 
@@ -455,7 +465,7 @@ public class SkillDataCustomEditor : Editor
                     EditorGUILayout.PropertyField(canMove);
                     EditorGUILayout.PropertyField(onSuperArmor);
                     EditorGUILayout.PropertyField(useKnockBack);
-                    if (skill.useKnockBack)
+                    if (aData.useKnockBack)
                     {
                         EditorGUILayout.PropertyField(knockBackForce);
                     }
@@ -464,18 +474,18 @@ public class SkillDataCustomEditor : Editor
                 showEffect = EditorGUILayout.Foldout(showEffect, "스킬 연출", true);
                 if (showEffect)
                 {
-                    EditorGUILayout.PropertyField(doSkillCasting);
-                    if (skill.skillCasting)
+                    EditorGUILayout.PropertyField(doAttackCasting);
+                    if (aData.attackCasting)
                     {
-                        EditorGUILayout.PropertyField(skillCastingTime);
+                        EditorGUILayout.PropertyField(attackCastingTime);
                     }
 
-                    EditorGUILayout.PropertyField(skillEffectName);
-                    EditorGUILayout.PropertyField(skillEffectPos);
+                    EditorGUILayout.PropertyField(attackEffectName);
+                    EditorGUILayout.PropertyField(attackEffectPos);
                     EditorGUILayout.PropertyField(hitEffectName);
                     EditorGUILayout.PropertyField(hitEffectPos);
-                    EditorGUILayout.PropertyField(skillSFX);
-                    if (skillSFX != null)
+                    EditorGUILayout.PropertyField(attackSFX);
+                    if (attackSFX != null)
                     {
                         if (GUILayout.Button("효과음 재생"))
                         {
@@ -484,13 +494,13 @@ public class SkillDataCustomEditor : Editor
                                 Debug.LogWarning("플레이모드에선 재생할 수 없습니다.");
                                 return;
                             }
-                            if (Application.isPlaying == false && skill.skillSFX == null)
+                            if (Application.isPlaying == false && aData.attackSFX == null)
                             {
-                                Debug.LogWarning($"skillSFX가 {skill.skillSFX} 입니다.");
+                                Debug.LogWarning($"skillSFX가 {aData.attackSFX} 입니다.");
                                 return;
                             }
-                            PlayClip(skill.skillSFX);
-                            Debug.Log($"효과음 재생 {skill.skillSFX}");
+                            OnEditorModePlayClip(aData.attackSFX);
+                            Debug.Log($"효과음 재생 {aData.attackSFX}");
                         }
                     }
                 }
@@ -500,7 +510,7 @@ public class SkillDataCustomEditor : Editor
                 if (showCamera)
                 {
                     EditorGUILayout.PropertyField(useCameraShake);
-                    if (skill.useCameraShake)
+                    if (aData.useCameraShake)
                     {
                         EditorGUILayout.PropertyField(shakeCameraForce);
                         EditorGUILayout.PropertyField(shakeCameraDir);
@@ -508,11 +518,14 @@ public class SkillDataCustomEditor : Editor
                     }
                 }
                 break;
+                #endregion
         }
         serializedObject.ApplyModifiedProperties();
     }
     private static MethodInfo playClipMethod;
-    private static void PlayClip(AudioClip clip)
+    
+    // 에디터모드에서 효과음 재생
+    private static void OnEditorModePlayClip(AudioClip clip)
     {
         #if UNITY_EDITOR
         if (clip == null) return;
