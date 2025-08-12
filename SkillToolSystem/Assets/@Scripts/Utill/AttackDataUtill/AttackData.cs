@@ -50,51 +50,52 @@ public enum SetBuffType
     ExampleBuff2,
 }
 
-[CreateAssetMenu(fileName ="NewSkill", menuName = "Skills/SkillData")]
+[CreateAssetMenu(fileName ="NewAttackData", menuName = "Attacks/AttackData")]
 public class AttackData : ScriptableObject
 {
-    public AttackType attackType;
-    public WeaponType weaponType;
+    public AttackType AttackType;
+    public WeaponType WeaponType;
     [TextArea]
-    public string attackDescription;
+    public string AttackDescription;
     public Sprite AttackIcon;
     public LayerMask TargetLayer;
-    public string attackName;
-    public float coolTime;
-    public float damage;
-    public int hitCount;
-    public AttackHitType attackHitType;
-    public AttackElement attackElement;
-    public AttackSpecialAbility specialAbility;
-    public SetBuffType setBuffType; 
-    public SetDebuffType setDebuffType;
-    public Vector2 startAttackPoint; 
-    public Vector2 attackRange;
+    public string AttackName;
+    public float CoolTime;
+    public float Damage;
+    public int HitCount;
+    public AttackHitType AttackHitType;
+    public AttackElement AttackElement;
+    public AttackSpecialAbility SpecialAbility;
+    public SetBuffType SetBuffType; 
+    public SetDebuffType SetDebuffType;
+    public Vector2 StartAttackPoint; 
+    public Vector2 AttackRange;
 
-    public bool usingLevelSystem;
-    public int attackCurLevel;
-    public int attackMaxLevel;
-    public float levelIncreaseValue;
-    public float hp;
-    public float mp;
-    public bool canMove;
-    public bool superArmor;
-    public bool useKnockBack;
-    public Vector2 knockBackForce;
-    public bool attackCasting;
-    public float castingTime;
+    public bool UsingLevelSystem;
+    public int AttackCurLevel;
+    public int AttackMaxLevel;
+    public float LevelIncreaseValue;
+    public float Hp;
+    public float Mp;
+    public bool CanMove;
+    public bool SuperArmor;
+    public bool UseKnockBack;
+    public Vector2 KnockBackForce;
+    public bool AttackCasting;
+    public float CastingTime;
+
     public string ProjectilePrefabName;
-    public float projectileForce;
+    public float ProjectileForce;
    
-    public AudioClip attackSFX;
-    public string attackEffectPrefabName;
-    public Vector2 effectPos;
+    public AudioClip AttackSFX;
+    public string AttackEffectPrefabName;
+    public Vector2 EffectPos;
 
     public string HitEffectPrefabName;
-    public Vector2 hitEffectPos;
+    public Vector2 HitEffectPos;
 
-    public bool useCameraShake;
-    public float shakePower;
-    public Vector2 shakeDir;
-    public float shakeDuration;
+    public bool UseCameraShake;
+    public float ShakePower;
+    public Vector2 ShakeDir;
+    public float ShakeDuration;
 }

@@ -1,12 +1,12 @@
 using UnityEngine;
 
-public class PlayerInput : MonoBehaviour
+public class PlayerMovement: MonoBehaviour
 {
-    Rigidbody2D rb;
-    public float speed = 2f;
+    Rigidbody2D _rb;
+    public float Speed = 2f;
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        _rb = GetComponent<Rigidbody2D>();
     }
 
     void Movement()
@@ -15,8 +15,8 @@ public class PlayerInput : MonoBehaviour
         {
             float h = Input.GetAxisRaw("Horizontal");
             float v = Input.GetAxisRaw("Vertical");
-            Vector2 moveDir = new Vector2(h,v);
-            transform.Translate(Time.deltaTime*speed*moveDir);
+            Vector2 _moveDir = new Vector2(h,v);
+            transform.Translate(Time.deltaTime * Speed * _moveDir.normalized);
             if (h < 0)
             {
                 transform.localScale = new Vector3(-1, 1, 1);
@@ -24,7 +24,6 @@ public class PlayerInput : MonoBehaviour
             else { transform.localScale = new Vector3(1, 1, 1); }
         }
     }
-    // Update is called once per frame
     void Update()
     {
         Movement();

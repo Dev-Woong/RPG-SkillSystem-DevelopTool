@@ -5,10 +5,10 @@ public interface IDamageAble
 }
 public abstract class DamageAbleBase : MonoBehaviour, IDamageAble   
 {
-    public bool damageAble = true;
+    public bool DamageAble = true;
     public void TakeDamage(float Damage, WeaponType wType)
     {
-        if (damageAble == true)
+        if (DamageAble == true)
         {
             OnDamage(Damage, wType);
         }

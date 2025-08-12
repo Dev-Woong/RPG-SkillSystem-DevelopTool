@@ -7,52 +7,52 @@ using UnityEngine.VFX;
 public class DamageHandler : MonoBehaviour
 {
     // public Transform target;
-    public BoxCollider2D boxCollider2D;
-    public float minYPos;
-    public float maxXPos;
-    private Vector3 hitStartPos;
-    private readonly HashSet<IDamageAble> damagedTargets = new();
-    private readonly WaitForSeconds Interval = new(0.04f);
-    private Coroutine coDamageProcess;
+    private BoxCollider2D _boxCollider2D;
+    private float _minYPos;
+    private float _maxXPos;
+    private Vector3 _hitStartPos;
+    private readonly HashSet<IDamageAble> _damagedTargets = new();
+    private readonly WaitForSeconds _interval = new(0.04f);
+    private Coroutine _coDamageProcess;
     public void Start()
     {
-        boxCollider2D = GetComponent<BoxCollider2D>();
-        
-        Debug.Log(minYPos);
+        _boxCollider2D = GetComponent<BoxCollider2D>();
+        Debug.Log(_minYPos);
     }
     public void CreateMeleeAttackBox(AttackData attackData,Transform AttackEffectPoint,bool attackEffectFlip)
     {
-        if (attackData.attackType != AttackType.Melee || attackData ==null)
+        if (attackData.AttackType != AttackType.Melee || attackData ==null)
             return;
-        if (attackData.attackSFX != null)
-            SFXManager.Instance.PlaySFX(attackData.attackSFX);
-        damagedTargets.Clear();
-        minYPos = boxCollider2D.bounds.min.y;
-        maxXPos = boxCollider2D.bounds.center.x;
-        hitStartPos = new Vector3(maxXPos +(attackData.attackRange.x / 2)+ attackData.startAttackPoint.x, minYPos +(attackData.attackRange.y/2) + attackData.startAttackPoint.y, 0);
-        Debug.Log(hitStartPos);
-        Collider2D[] hits = Physics2D.OverlapBoxAll(hitStartPos, attackData.attackRange, 0, attackData.TargetLayer);
-        Debug.DrawLine(hitStartPos,attackData.attackRange, Color.red, 2f);
-        if (attackData.attackHitType == AttackHitType.MultiTarget)
+        if (attackData.AttackSFX != null)
+            SFXManager.s_Instance.PlaySFX(attackData.AttackSFX);
+
+        _damagedTargets.Clear();
+        _minYPos = _boxCollider2D.bounds.min.y;
+        _maxXPos = _boxCollider2D.bounds.center.x;
+        _hitStartPos = transform.right*transform.localScale.x + new Vector3(_maxXPos+(attackData.AttackRange.x / 2 * transform.localScale.x) + (attackData.StartAttackPoint.x * transform.localScale.x), _minYPos +(attackData.AttackRange.y/2) + attackData.StartAttackPoint.y, 0);
+        Debug.Log(_hitStartPos);
+        Collider2D[] hits = Physics2D.OverlapBoxAll(_hitStartPos, attackData.AttackRange, 0, attackData.TargetLayer);
+        Debug.DrawLine(_hitStartPos,attackData.AttackRange, Color.red, 2f);
+        if (attackData.AttackHitType == AttackHitType.MultiTarget)
         {
             foreach (var hit in hits)
             {
-                if (hit.bounds.min.y >= (hitStartPos.y - (attackData.attackRange.y / 2)) && hit.bounds.min.y <= (hitStartPos.y + (attackData.attackRange.y / 2)))
+                if (hit.bounds.min.y >= (_hitStartPos.y - (attackData.AttackRange.y / 2)) && hit.bounds.min.y <= (_hitStartPos.y + (attackData.AttackRange.y / 2)))
                 {
                     IDamageAble dmg = hit.GetComponent<IDamageAble>();
-                    if (dmg != null && !damagedTargets.Contains(dmg))
+                    if (dmg != null && !_damagedTargets.Contains(dmg))
                     {
-                        damagedTargets.Add(dmg);
-                        if (hit.GetComponent<DamageAbleBase>().damageAble == true)
+                        _damagedTargets.Add(dmg);
+                        if (hit.GetComponent<DamageAbleBase>().DamageAble == true)
                         {
                             Debug.Log("MultiTargetProcess");
-                            coDamageProcess = StartCoroutine(HitDamage(dmg, attackData, hit.gameObject, AttackEffectPoint, attackEffectFlip));
+                            _coDamageProcess = StartCoroutine(HitDamage(dmg, attackData, hit.gameObject, AttackEffectPoint, attackEffectFlip));
                         }
                     }
                 }
             }
         }
-        if (attackData.attackHitType == AttackHitType.SingleTarget)
+        if (attackData.AttackHitType == AttackHitType.SingleTarget)
         {
             float minDistance = float.MaxValue;
             float curDistance;
@@ -72,17 +72,17 @@ public class DamageHandler : MonoBehaviour
             }
             IDamageAble dmg = hits[curHits].GetComponent<IDamageAble>();
             Debug.Log($"SingleTargetProcess : {curHits}, {minDistance}");
-            coDamageProcess = StartCoroutine(HitDamage(dmg, attackData, hits[curHits].gameObject, AttackEffectPoint, attackEffectFlip));
+            _coDamageProcess = StartCoroutine(HitDamage(dmg, attackData, hits[curHits].gameObject, AttackEffectPoint, attackEffectFlip));
         }
     }
     IEnumerator HitDamage(IDamageAble dmg, AttackData attackData, GameObject target, Transform AttackEffectPoint, bool attackEffectFlip)
     {
         int currentHits = 0;
-        Vector3 effectPos = new Vector3(attackData.effectPos.x, attackData.effectPos.y, 0);
+        Vector3 effectPos = new Vector3(attackData.EffectPos.x, attackData.EffectPos.y, 0);
 
-        if (attackData.attackEffectPrefabName != "")
+        if (attackData.AttackEffectPrefabName != "")
         {
-            var attackEffect = ObjectPoolManager.instance.GetObject(attackData.attackEffectPrefabName);
+            var attackEffect = ObjectPoolManager.instance.GetObject(attackData.AttackEffectPrefabName);
             if (attackEffectFlip == true)
             {
                 attackEffect.GetComponent<SpriteRenderer>().flipX = true;
@@ -90,22 +90,22 @@ public class DamageHandler : MonoBehaviour
             attackEffect.transform.position = AttackEffectPoint.position;
         }
         else yield return null;
-        if (target.GetComponent<ObjectStatus>().onKnockBack == true) // 공격 넉백 프로세스
+        if (target.GetComponent<ObjectStatus>().OnKnockBack == true && target.GetComponent<ObjectStatus>().OnSuperArmor ==false) // 공격 넉백 프로세스
         {
-            float xKnockbackForce = attackData.knockBackForce.x;
+            float xKnockbackForce = attackData.KnockBackForce.x;
             target.GetComponent<Rigidbody2D>().linearVelocity = Vector3.zero;
             if (target.transform.position.x < transform.position.x)
             {
                 xKnockbackForce = -xKnockbackForce;
             }
-            target.GetComponent<Rigidbody2D>().AddForce(new Vector3(xKnockbackForce, attackData.knockBackForce.y, 0), ForceMode2D.Impulse);
+            target.GetComponent<Rigidbody2D>().AddForce(new Vector3(xKnockbackForce, attackData.KnockBackForce.y, 0), ForceMode2D.Impulse);
         }
-        while (currentHits < attackData.hitCount)
+        while (currentHits < attackData.HitCount)
         {
-            dmg.TakeDamage((attackData.damage), attackData.weaponType);
+            dmg.TakeDamage((attackData.Damage), attackData.WeaponType);
             if (attackData.HitEffectPrefabName != "")
             {
-                if (target.GetComponent<ObjectStatus>().isDie == false)
+                if (target.GetComponent<ObjectStatus>().IsDie == false)
                 {
                     var effect = ObjectPoolManager.instance.GetObject(attackData.HitEffectPrefabName);
 
@@ -119,7 +119,7 @@ public class DamageHandler : MonoBehaviour
             }
             else yield return null;
             currentHits++;
-            yield return Interval;
+            yield return _interval;
         }
         yield return new WaitForSeconds(0.4f);
     }

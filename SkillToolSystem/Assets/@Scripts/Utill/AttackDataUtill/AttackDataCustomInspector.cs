@@ -7,177 +7,175 @@ using UnityEngine;
 [CustomEditor(typeof(AttackData))]
 public class AttackDataCustomInspector : Editor
 {
-    private bool showBasic = true;
-    private bool showCost = true;
-    private bool showEffect = true;
-    private bool showCamera = true;
+    private bool _showBasic = true;
+    private bool _showCost = true;
+    private bool _showEffect = true;
+    private bool _showCamera = true;
     #region PropertyField
-    SerializedProperty attackType; // 스킬타입 대전제
-    SerializedProperty TargetLayer; // 스킬 타겟레이어
-
+    private SerializedProperty _attackType; // 스킬타입 대전제
+    private SerializedProperty _targetLayer; // 스킬 타겟레이어
+    
     // ** 스킬 기본 정보 ** // 
     //- 스킬 이름
-    SerializedProperty attackName;
-
+    private SerializedProperty _attackName;
+     
     //- 공격자 무기타입
-
-    SerializedProperty weaponType;
-
+    
+    private SerializedProperty _weaponType;
+    
     //- 스킬 설명
-    SerializedProperty attackDescription;
-
+    private SerializedProperty _attackDescription;
+    
     //- 스킬 아이콘
-    SerializedProperty attackIcon;
-
+    private SerializedProperty _attackIcon;
+    
     //- 쿨타임
-    SerializedProperty coolTime;
-
+    private SerializedProperty _coolTime;
+    
     //- 데미지
-    SerializedProperty damage;
-
+    private SerializedProperty _damage;
+    
     //- 히트수
-    SerializedProperty hitCount;
-
+    private SerializedProperty _hitCount;
+    
     // 다중, 단일타겟
-    SerializedProperty attackHitType;
-
+    private SerializedProperty _attackHitType;
+    
     // 공격 속성
-    SerializedProperty attackElement;
-
-    // 스킬 특수 능력
-    SerializedProperty specialAbility;
-
-    // 버프 타입
-    SerializedProperty setBuffType;
-
+    private SerializedProperty _attackElement;
+     
+     // 스킬 특수 능력
+    private SerializedProperty _specialAbility;
+   
+   // 버프 타입
+    private SerializedProperty _setBuffType;
+    
     // 디버프 타입
-    SerializedProperty setDebuffType;
-
-    // 스킬 범위
-    SerializedProperty startAttackPoint;
-    SerializedProperty attackRange;
-
+    private SerializedProperty _setDebuffType;
+     
+     // 스킬 범위
+    private SerializedProperty _startAttackPoint;
+    private SerializedProperty _attackRange;
+     
     // ----------------------------------------------
-
+    
     // ** 스킬 레벨시스템 디자인 ** //
-
+    
     //- 스킬 레벨 시스템 사용 여부
-    SerializedProperty usingLevelSystem;
-
+    private SerializedProperty _usingLevelSystem;
+    
     //- 스킬 현재레벨
-    SerializedProperty attackCurLevel;
-
-    //- 스킬 최대레벨
-    SerializedProperty attackMaxLevel;
-
-    //- 스킬 레벨당 데미지 상승치
-    SerializedProperty attackIncreaseValue;
+    private SerializedProperty _attackCurLevel;
+    
+     //- 스킬 최대레벨
+    private SerializedProperty _attackMaxLevel;
+   
+     //- 스킬 레벨당 데미지 상승치
+    private SerializedProperty _attackIncreaseValue;
 
     // ----------------------------------------------
 
     // ** 소모코스트  
-    SerializedProperty hpCost;
-    SerializedProperty mpCost;
+    private SerializedProperty _hpCost;
+    private SerializedProperty _mpCost;
 
     // ** 스킬 사용중 이동여부
-    SerializedProperty canMove;
+    private SerializedProperty _canMove;
 
     // ** 슈퍼아머
-    SerializedProperty onSuperArmor;
+    private SerializedProperty _onSuperArmor;
 
     // ** 넉백
-    SerializedProperty useKnockBack;
-    SerializedProperty knockBackForce;
+    private SerializedProperty _useKnockBack;
+    private SerializedProperty _knockBackForce;
 
     // ** 스킬 캐스팅
-    SerializedProperty doAttackCasting;
-    SerializedProperty attackCastingTime;
+    private SerializedProperty _doAttackCasting;
+    private SerializedProperty _attackCastingTime;
 
     // ** 투사체
-    SerializedProperty ProjectilePrefabName;
-    SerializedProperty projectileForce;
+    private SerializedProperty _projectilePrefabName;
+    private SerializedProperty _projectileForce;
 
     // ** 스킬 연출 ** // 
     
     //- 스킬 시전 사운드
-    SerializedProperty attackSFX;
+    private SerializedProperty _attackSFX;
 
     //- 스킬 이펙트
-    SerializedProperty attackEffectName;
-    SerializedProperty attackEffectPos;
+    private SerializedProperty _attackEffectName;
+    private SerializedProperty _attackEffectPos;
 
     //- 타격 이펙트
-    SerializedProperty hitEffectName;
-    SerializedProperty hitEffectPos;
+    private SerializedProperty _hitEffectName;
+    private SerializedProperty _hitEffectPos;
 
     // ----------------------------------------------
 
     // ** 카메라 연출 ** //
 
     //- 카메라 연출 사용여부
-    SerializedProperty useCameraShake;
+    private SerializedProperty _useCameraShake;
 
     //- 카메라 쉐이크 힘
-    SerializedProperty shakeCameraForce;
+    private SerializedProperty _shakeCameraForce;
 
     //- 카메라 쉐이크 방향
-    SerializedProperty shakeCameraDir;
+    private SerializedProperty _shakeCameraDir;
 
     //- 카메라 쉐이크 유지시간
-    SerializedProperty shakeCameraDuration;
+    private SerializedProperty _shakeCameraDuration;
 
     // ----------------------------------------------
     #endregion
     private void OnEnable()
     {
+        _attackType = serializedObject.FindProperty("AttackType");
+        _weaponType = serializedObject.FindProperty("WeaponType");
+        _attackDescription = serializedObject.FindProperty("AttackDescription");
+        _attackIcon = serializedObject.FindProperty("AttackIcon");
+        _targetLayer = serializedObject.FindProperty("TargetLayer");
+        _attackName = serializedObject.FindProperty("AttackName");
+        _coolTime = serializedObject.FindProperty("CoolTime");
+        _damage = serializedObject.FindProperty("Damage");
+        _hitCount = serializedObject.FindProperty("HitCount");
+        _attackHitType = serializedObject.FindProperty("AttackHitType");
+        _attackElement = serializedObject.FindProperty("AttackElement");
+        _specialAbility = serializedObject.FindProperty("SpecialAbility");
+        _setBuffType = serializedObject.FindProperty("SetBuffType");
+        _setDebuffType = serializedObject.FindProperty("SetDebuffType");
+        _startAttackPoint = serializedObject.FindProperty("StartAttackPoint");
+        _attackRange = serializedObject.FindProperty("AttackRange");
 
-        
-        attackType = serializedObject.FindProperty("attackType");
-        weaponType = serializedObject.FindProperty("weaponType");
-        attackDescription = serializedObject.FindProperty("attackDescription");
-        attackIcon = serializedObject.FindProperty("AttackIcon");
-        TargetLayer = serializedObject.FindProperty("TargetLayer");
-        attackName = serializedObject.FindProperty("attackName");
-        coolTime = serializedObject.FindProperty("coolTime");
-        damage = serializedObject.FindProperty("damage");
-        hitCount = serializedObject.FindProperty("hitCount");
-        attackHitType = serializedObject.FindProperty("attackHitType");
-        attackElement = serializedObject.FindProperty("attackElement");
-        specialAbility = serializedObject.FindProperty("specialAbility");
-        setBuffType = serializedObject.FindProperty("setBuffType");
-        setDebuffType = serializedObject.FindProperty("setDebuffType");
-        startAttackPoint = serializedObject.FindProperty("startAttackPoint");
-        attackRange = serializedObject.FindProperty("attackRange");
+        _usingLevelSystem = serializedObject.FindProperty("UsingLevelSystem");
+        _attackCurLevel = serializedObject.FindProperty("AttackCurLevel");
+        _attackMaxLevel = serializedObject.FindProperty("AttackMaxLevel");
+        _attackIncreaseValue = serializedObject.FindProperty("LevelIncreaseValue");
 
-        usingLevelSystem = serializedObject.FindProperty("usingLevelSystem");
-        attackCurLevel = serializedObject.FindProperty("attackCurLevel");
-        attackMaxLevel = serializedObject.FindProperty("attackMaxLevel");
-        attackIncreaseValue = serializedObject.FindProperty("levelIncreaseValue");
+        _hpCost = serializedObject.FindProperty("Hp");
+        _mpCost = serializedObject.FindProperty("Mp");
+        _canMove = serializedObject.FindProperty("CanMove");
+        _onSuperArmor = serializedObject.FindProperty("SuperArmor");
 
-        hpCost = serializedObject.FindProperty("hp");
-        mpCost = serializedObject.FindProperty("mp");
-        canMove = serializedObject.FindProperty("canMove");
-        onSuperArmor = serializedObject.FindProperty("superArmor");
+        _useKnockBack = serializedObject.FindProperty("UseKnockBack");
+        _knockBackForce = serializedObject.FindProperty("KnockBackForce");
 
-        useKnockBack = serializedObject.FindProperty("useKnockBack");
-        knockBackForce = serializedObject.FindProperty("knockBackForce");
+        _doAttackCasting = serializedObject.FindProperty("AttackCasting");
+        _attackCastingTime = serializedObject.FindProperty("CastingTime");
 
-        doAttackCasting = serializedObject.FindProperty("attackCasting");
-        attackCastingTime = serializedObject.FindProperty("castingTime");
+        _projectilePrefabName = serializedObject.FindProperty("ProjectilePrefabName");
+        _projectileForce = serializedObject.FindProperty("ProjectileForce");
 
-        ProjectilePrefabName = serializedObject.FindProperty("ProjectilePrefabName");
-        projectileForce = serializedObject.FindProperty("projectileForce");
+        _attackSFX = serializedObject.FindProperty("AttackSFX");
+        _attackEffectName = serializedObject.FindProperty("AttackEffectPrefabName");
+        _attackEffectPos = serializedObject.FindProperty("EffectPos");
+        _hitEffectName = serializedObject.FindProperty("HitEffectPrefabName");
+        _hitEffectPos = serializedObject.FindProperty("HitEffectPos");
 
-        attackSFX = serializedObject.FindProperty("attackSFX");
-        attackEffectName = serializedObject.FindProperty("attackEffectPrefabName");
-        attackEffectPos = serializedObject.FindProperty("effectPos");
-        hitEffectName = serializedObject.FindProperty("HitEffectPrefabName");
-        hitEffectPos = serializedObject.FindProperty("hitEffectPos");
-
-        useCameraShake = serializedObject.FindProperty("useCameraShake");
-        shakeCameraForce = serializedObject.FindProperty("shakePower");
-        shakeCameraDir = serializedObject.FindProperty("shakeDir");
-        shakeCameraDuration = serializedObject.FindProperty("shakeDuration");
+        _useCameraShake = serializedObject.FindProperty("UseCameraShake");
+        _shakeCameraForce = serializedObject.FindProperty("ShakePower");
+        _shakeCameraDir = serializedObject.FindProperty("ShakeDir");
+        _shakeCameraDuration = serializedObject.FindProperty("ShakeDuration");
     }
     public override void OnInspectorGUI()
     {
@@ -196,80 +194,80 @@ public class AttackDataCustomInspector : Editor
         serializedObject.Update();
         EditorGUILayout.Space();
 
-        EditorGUILayout.PropertyField(attackType);
-        switch (aData.attackType)
+        EditorGUILayout.PropertyField(_attackType);
+        switch (aData.AttackType)
         {
             //근접 공격 타입 인스펙터
             #region MeleeAttackType
             case AttackType.Melee:
-                showBasic = EditorGUILayout.Foldout(showBasic, "근접타입 기본 정보", true);
-                if (showBasic)
+                _showBasic = EditorGUILayout.Foldout(_showBasic, "근접타입 기본 정보", true);
+                if (_showBasic)
                 {
-                    EditorGUILayout.PropertyField(TargetLayer);
-                    EditorGUILayout.PropertyField(weaponType);
-                    EditorGUILayout.PropertyField(attackIcon);
-                    EditorGUILayout.PropertyField(attackName);
-                    EditorGUILayout.PropertyField(attackDescription);
-                    EditorGUILayout.PropertyField(coolTime);
-                    EditorGUILayout.PropertyField(damage);
-                    EditorGUILayout.PropertyField(hitCount);
-                    EditorGUILayout.PropertyField(attackHitType);
-                    EditorGUILayout.PropertyField(attackElement);
-                    EditorGUILayout.PropertyField(specialAbility);
-                    if (aData.specialAbility == AttackSpecialAbility.Buff)
+                    EditorGUILayout.PropertyField(_targetLayer);
+                    EditorGUILayout.PropertyField(_weaponType);
+                    EditorGUILayout.PropertyField(_attackIcon);
+                    EditorGUILayout.PropertyField(_attackName);
+                    EditorGUILayout.PropertyField(_attackDescription);
+                    EditorGUILayout.PropertyField(_coolTime);
+                    EditorGUILayout.PropertyField(_damage);
+                    EditorGUILayout.PropertyField(_hitCount);
+                    EditorGUILayout.PropertyField(_attackHitType);
+                    EditorGUILayout.PropertyField(_attackElement);
+                    EditorGUILayout.PropertyField(_specialAbility);
+                    if (aData.SpecialAbility == AttackSpecialAbility.Buff)
                     {
-                        EditorGUILayout.PropertyField(setBuffType);
+                        EditorGUILayout.PropertyField(_setBuffType);
                     }
-                    else if (aData.specialAbility == AttackSpecialAbility.DeBuff)
+                    else if (aData.SpecialAbility == AttackSpecialAbility.DeBuff)
                     {
-                        EditorGUILayout.PropertyField(setDebuffType);
+                        EditorGUILayout.PropertyField(_setDebuffType);
                     }
 
                     EditorGUILayout.Space();
 
                     EditorGUILayout.LabelField("공격 범위", EditorStyles.boldLabel);
-                    EditorGUILayout.PropertyField(startAttackPoint);
-                    EditorGUILayout.PropertyField(attackRange);
+                    EditorGUILayout.PropertyField(_startAttackPoint);
+                    EditorGUILayout.PropertyField(_attackRange);
                     EditorGUILayout.Space();
-                    EditorGUILayout.PropertyField(usingLevelSystem);
-                    if (aData.usingLevelSystem)
+                    EditorGUILayout.PropertyField(_usingLevelSystem);
+                    if (aData.UsingLevelSystem)
                     {
-                        EditorGUILayout.PropertyField(attackCurLevel);
-                        EditorGUILayout.PropertyField(attackMaxLevel);
+                        EditorGUILayout.PropertyField(_attackCurLevel);
+                        EditorGUILayout.PropertyField(_attackMaxLevel);
                         EditorGUILayout.LabelField("공격데이터 레벨당 데미지 증가값", EditorStyles.miniBoldLabel);
-                        EditorGUILayout.PropertyField(attackIncreaseValue);
+                        EditorGUILayout.PropertyField(_attackIncreaseValue);
                     }
                 }
                 EditorGUILayout.Space();
-                showCost = EditorGUILayout.Foldout(showCost, "코스트 및 부가 효과", true);
-                if (showCost)
+                _showCost = EditorGUILayout.Foldout(_showCost, "코스트 및 부가 효과", true);
+                if (_showCost)
                 {
-                    EditorGUILayout.PropertyField(hpCost);
-                    EditorGUILayout.PropertyField(mpCost);
-                    EditorGUILayout.PropertyField(canMove);
-                    EditorGUILayout.PropertyField(onSuperArmor);
-                    EditorGUILayout.PropertyField(useKnockBack);
-                    if (aData.useKnockBack)
+                    EditorGUILayout.PropertyField(_hpCost);
+                    EditorGUILayout.PropertyField(_mpCost);
+                    EditorGUILayout.PropertyField(_canMove);
+                    EditorGUILayout.PropertyField(_onSuperArmor);
+                    EditorGUILayout.PropertyField(_useKnockBack);
+                    if (aData.UseKnockBack)
                     {
-                        EditorGUILayout.PropertyField(knockBackForce);
+                        EditorGUILayout.PropertyField(_knockBackForce);
                     }
                 }
                 EditorGUILayout.Space();
-                showEffect = EditorGUILayout.Foldout(showEffect, "스킬 연출", true);
-                if (showEffect)
+                _showEffect = EditorGUILayout.Foldout(_showEffect, "스킬 연출", true);
+                if (_showEffect)
                 {
-                    EditorGUILayout.PropertyField(doAttackCasting);
-                    if (aData.attackCasting)
+                    EditorGUILayout.PropertyField(_doAttackCasting);
+                    if (aData.AttackCasting)
                     {
-                        EditorGUILayout.PropertyField(attackCastingTime);
+                        EditorGUILayout.PropertyField(_attackCastingTime);
                     }
 
-                    EditorGUILayout.PropertyField(attackEffectName);
-                    EditorGUILayout.PropertyField(attackEffectPos);
-                    EditorGUILayout.PropertyField(hitEffectName);
-                    EditorGUILayout.PropertyField(hitEffectPos);
-                    EditorGUILayout.PropertyField(attackSFX);
-                    if (attackSFX != null)
+                    EditorGUILayout.PropertyField(_attackEffectName);
+                    EditorGUILayout.PropertyField(_attackEffectPos);
+                    EditorGUILayout.PropertyField(_hitEffectName);
+                    EditorGUILayout.PropertyField(_hitEffectPos);
+                    EditorGUILayout.PropertyField(_attackSFX);
+                    if (_attackSFX != null)
                     {
                         if (GUILayout.Button("효과음 재생"))
                         {
@@ -278,27 +276,27 @@ public class AttackDataCustomInspector : Editor
                                 Debug.LogWarning("플레이모드에선 재생할 수 없습니다.");
                                 return;
                             }
-                            if (Application.isPlaying == false && aData.attackSFX == null)
+                            if (Application.isPlaying == false && aData.AttackSFX == null)
                             {
-                                Debug.LogWarning($"attackSFX가 {aData.attackSFX} 입니다.");
+                                Debug.LogWarning($"attackSFX가 {aData.AttackSFX} 입니다.");
                                 return;
                             }
-                            OnEditorModePlayClip(aData.attackSFX);
-                            Debug.Log($"효과음 재생 {aData.attackSFX}");
+                            OnEditorModePlayClip(aData.AttackSFX);
+                            Debug.Log($"효과음 재생 {aData.AttackSFX}");
                         }
                     }
                 }
 
                 EditorGUILayout.Space();
-                showCamera = EditorGUILayout.Foldout(showCamera, "카메라 연출", true);
-                if (showCamera)
+                _showCamera = EditorGUILayout.Foldout(_showCamera, "카메라 연출", true);
+                if (_showCamera)
                 {
-                    EditorGUILayout.PropertyField(useCameraShake);
-                    if (aData.useCameraShake)
+                    EditorGUILayout.PropertyField(_useCameraShake);
+                    if (aData.UseCameraShake)
                     {
-                        EditorGUILayout.PropertyField(shakeCameraForce);
-                        EditorGUILayout.PropertyField(shakeCameraDir);
-                        EditorGUILayout.PropertyField(shakeCameraDuration);
+                        EditorGUILayout.PropertyField(_shakeCameraForce);
+                        EditorGUILayout.PropertyField(_shakeCameraDir);
+                        EditorGUILayout.PropertyField(_shakeCameraDuration);
                     }
                 }
                 break;
@@ -308,75 +306,75 @@ public class AttackDataCustomInspector : Editor
             //원거리 공격 타입 인스펙터
             #region RangeAttackCase
             case AttackType.Range:
-                showBasic = EditorGUILayout.Foldout(showBasic, "투사체타입 기본 정보", true);
-                if (showBasic)
+                _showBasic = EditorGUILayout.Foldout(_showBasic, "투사체타입 기본 정보", true);
+                if (_showBasic)
                 {
-                    EditorGUILayout.PropertyField(TargetLayer);
-                    EditorGUILayout.PropertyField(weaponType);
-                    EditorGUILayout.PropertyField(attackIcon);
-                    EditorGUILayout.PropertyField(attackName);
-                    EditorGUILayout.PropertyField(attackDescription);
-                    EditorGUILayout.PropertyField(coolTime);
-                    EditorGUILayout.PropertyField(damage);
-                    EditorGUILayout.PropertyField(hitCount);
-                    EditorGUILayout.PropertyField(attackHitType);
-                    EditorGUILayout.PropertyField(attackElement);
-                    EditorGUILayout.PropertyField(specialAbility);
-                    if (aData.specialAbility == AttackSpecialAbility.Buff)
+                    EditorGUILayout.PropertyField(_targetLayer);
+                    EditorGUILayout.PropertyField(_weaponType);
+                    EditorGUILayout.PropertyField(_attackIcon);
+                    EditorGUILayout.PropertyField(_attackName);
+                    EditorGUILayout.PropertyField(_attackDescription);
+                    EditorGUILayout.PropertyField(_coolTime);
+                    EditorGUILayout.PropertyField(_damage);
+                    EditorGUILayout.PropertyField(_hitCount);
+                    EditorGUILayout.PropertyField(_attackHitType);
+                    EditorGUILayout.PropertyField(_attackElement);
+                    EditorGUILayout.PropertyField(_specialAbility);
+                    if (aData.SpecialAbility == AttackSpecialAbility.Buff)
                     {
-                        EditorGUILayout.PropertyField(setBuffType);
+                        EditorGUILayout.PropertyField(_setBuffType);
                     }
-                    else if (aData.specialAbility == AttackSpecialAbility.DeBuff)
+                    else if (aData.SpecialAbility == AttackSpecialAbility.DeBuff)
                     {
-                        EditorGUILayout.PropertyField(setDebuffType);
+                        EditorGUILayout.PropertyField(_setDebuffType);
                     }
                     EditorGUILayout.Space();
                     EditorGUILayout.LabelField("투사체 프리팹 정보", EditorStyles.miniBoldLabel);
-                    EditorGUILayout.PropertyField(ProjectilePrefabName);
-                    EditorGUILayout.PropertyField(projectileForce);
+                    EditorGUILayout.PropertyField(_projectilePrefabName);
+                    EditorGUILayout.PropertyField(_projectileForce);
                     EditorGUILayout.Space();
-                    EditorGUILayout.PropertyField(usingLevelSystem);
-                    if (aData.usingLevelSystem)
+                    EditorGUILayout.PropertyField(_usingLevelSystem);
+                    if (aData.UsingLevelSystem)
                     {
-                        EditorGUILayout.PropertyField(attackCurLevel);
-                        EditorGUILayout.PropertyField(attackMaxLevel);
+                        EditorGUILayout.PropertyField(_attackCurLevel);
+                        EditorGUILayout.PropertyField(_attackMaxLevel);
                         EditorGUILayout.LabelField("스킬 레벨당 데미지 증가값", EditorStyles.miniBoldLabel);
-                        EditorGUILayout.PropertyField(attackIncreaseValue);
+                        EditorGUILayout.PropertyField(_attackIncreaseValue);
                     }
                 }
                 
                 
                 EditorGUILayout.Space();
-                showCost = EditorGUILayout.Foldout(showCost, "코스트 및 부가 효과", true);
-                if (showCost)
+                _showCost = EditorGUILayout.Foldout(_showCost, "코스트 및 부가 효과", true);
+                if (_showCost)
                 {
-                    EditorGUILayout.PropertyField(hpCost);
-                    EditorGUILayout.PropertyField(mpCost);
-                    EditorGUILayout.PropertyField(onSuperArmor);
-                    EditorGUILayout.PropertyField(useKnockBack);
-                    if (aData.useKnockBack)
+                    EditorGUILayout.PropertyField(_hpCost);
+                    EditorGUILayout.PropertyField(_mpCost);
+                    EditorGUILayout.PropertyField(_onSuperArmor);
+                    EditorGUILayout.PropertyField(_useKnockBack);
+                    if (aData.UseKnockBack)
                     {
-                        EditorGUILayout.PropertyField(knockBackForce);
+                        EditorGUILayout.PropertyField(_knockBackForce);
                     }
                 }
 
                 EditorGUILayout.Space();
-                showEffect = EditorGUILayout.Foldout(showEffect, "스킬 연출", true);
-                if (showEffect)
+                _showEffect = EditorGUILayout.Foldout(_showEffect, "스킬 연출", true);
+                if (_showEffect)
                 {
-                    EditorGUILayout.PropertyField(doAttackCasting);
-                    if (aData.attackCasting)
+                    EditorGUILayout.PropertyField(_doAttackCasting);
+                    if (aData.AttackCasting)
                     {
-                        EditorGUILayout.PropertyField(attackCastingTime);
+                        EditorGUILayout.PropertyField(_attackCastingTime);
                     }
 
-                    EditorGUILayout.PropertyField(canMove);
-                    EditorGUILayout.PropertyField(attackEffectName);
-                    EditorGUILayout.PropertyField(attackEffectPos);
-                    EditorGUILayout.PropertyField(hitEffectName);
-                    EditorGUILayout.PropertyField(hitEffectPos);
-                    EditorGUILayout.PropertyField(attackSFX);
-                    if (attackSFX != null)
+                    EditorGUILayout.PropertyField(_canMove);
+                    EditorGUILayout.PropertyField(_attackEffectName);
+                    EditorGUILayout.PropertyField(_attackEffectPos);
+                    EditorGUILayout.PropertyField(_hitEffectName);
+                    EditorGUILayout.PropertyField(_hitEffectPos);
+                    EditorGUILayout.PropertyField(_attackSFX);
+                    if (_attackSFX != null)
                     {
                         if (GUILayout.Button("효과음 재생"))
                         {
@@ -385,27 +383,27 @@ public class AttackDataCustomInspector : Editor
                                 Debug.LogWarning("플레이모드에선 재생할 수 없습니다.");
                                 return;
                             }
-                            if (Application.isPlaying == false && aData.attackSFX == null)
+                            if (Application.isPlaying == false && aData.AttackSFX == null)
                             {
-                                Debug.LogWarning($"skillSFX가 {aData.attackSFX} 입니다.");
+                                Debug.LogWarning($"Attack SFX가 {aData.AttackSFX} 입니다.");
                                 return;
                             }
-                            OnEditorModePlayClip(aData.attackSFX);
-                            Debug.Log($"효과음 재생 {aData.attackSFX}");
+                            OnEditorModePlayClip(aData.AttackSFX);
+                            Debug.Log($"효과음 재생 {aData.AttackSFX}");
                         }
                     }
                 }
 
                 EditorGUILayout.Space();
-                showCamera = EditorGUILayout.Foldout(showCamera, "카메라 연출", true);
-                if (showCamera)
+                _showCamera = EditorGUILayout.Foldout(_showCamera, "카메라 연출", true);
+                if (_showCamera)
                 {
-                    EditorGUILayout.PropertyField(useCameraShake);
-                    if (aData.useCameraShake)
+                    EditorGUILayout.PropertyField(_useCameraShake);
+                    if (aData.UseCameraShake)
                     {
-                        EditorGUILayout.PropertyField(shakeCameraForce);
-                        EditorGUILayout.PropertyField(shakeCameraDir);
-                        EditorGUILayout.PropertyField(shakeCameraDuration);
+                        EditorGUILayout.PropertyField(_shakeCameraForce);
+                        EditorGUILayout.PropertyField(_shakeCameraDir);
+                        EditorGUILayout.PropertyField(_shakeCameraDuration);
                     }
                 }
                 break;
@@ -415,77 +413,77 @@ public class AttackDataCustomInspector : Editor
             //범위 공격 타입 인스펙터
             #region AOEAttackType
             case AttackType.AOE:
-                showBasic = EditorGUILayout.Foldout(showBasic, "AOE타입 기본 정보", true);
-                if (showBasic)
+                _showBasic = EditorGUILayout.Foldout(_showBasic, "AOE타입 기본 정보", true);
+                if (_showBasic)
                 {
-                    EditorGUILayout.PropertyField(TargetLayer);
-                    EditorGUILayout.PropertyField(weaponType);
-                    EditorGUILayout.PropertyField(attackIcon);
-                    EditorGUILayout.PropertyField(attackName);
-                    EditorGUILayout.PropertyField(attackDescription);
-                    EditorGUILayout.PropertyField(coolTime);
-                    EditorGUILayout.PropertyField(damage);
-                    EditorGUILayout.PropertyField(hitCount);
-                    EditorGUILayout.PropertyField(attackHitType);
-                    EditorGUILayout.PropertyField(attackElement);
-                    EditorGUILayout.PropertyField(specialAbility);
-                    if (aData.specialAbility == AttackSpecialAbility.Buff)
+                    EditorGUILayout.PropertyField(_targetLayer);
+                    EditorGUILayout.PropertyField(_weaponType);
+                    EditorGUILayout.PropertyField(_attackIcon);
+                    EditorGUILayout.PropertyField(_attackName);
+                    EditorGUILayout.PropertyField(_attackDescription);
+                    EditorGUILayout.PropertyField(_coolTime);
+                    EditorGUILayout.PropertyField(_damage);
+                    EditorGUILayout.PropertyField(_hitCount);
+                    EditorGUILayout.PropertyField(_attackHitType);
+                    EditorGUILayout.PropertyField(_attackElement);
+                    EditorGUILayout.PropertyField(_specialAbility);
+                    if (aData.SpecialAbility == AttackSpecialAbility.Buff)
                     {
-                        EditorGUILayout.PropertyField(setBuffType);
+                        EditorGUILayout.PropertyField(_setBuffType);
                     }
-                    else if (aData.specialAbility == AttackSpecialAbility.DeBuff)
+                    else if (aData.SpecialAbility == AttackSpecialAbility.DeBuff)
                     {
-                        EditorGUILayout.PropertyField(setDebuffType);
+                        EditorGUILayout.PropertyField(_setDebuffType);
                     }
 
                     EditorGUILayout.Space();
 
                     EditorGUILayout.LabelField("스킬 범위", EditorStyles.boldLabel);
-                    EditorGUILayout.PropertyField(startAttackPoint);
-                    EditorGUILayout.PropertyField(attackRange);
+                    EditorGUILayout.PropertyField(_startAttackPoint);
+                    EditorGUILayout.PropertyField(_attackRange);
                     EditorGUILayout.Space();
-                    EditorGUILayout.PropertyField(usingLevelSystem);
-                    if (aData.usingLevelSystem)
+                    EditorGUILayout.PropertyField(_usingLevelSystem);
+                    if (aData.UsingLevelSystem)
                     {
-                        EditorGUILayout.PropertyField(attackCurLevel);
-                        EditorGUILayout.PropertyField(attackMaxLevel);
+                        EditorGUILayout.PropertyField(_attackCurLevel);
+                        EditorGUILayout.PropertyField(_attackMaxLevel);
                         EditorGUILayout.LabelField("스킬 레벨당 데미지 증가값", EditorStyles.miniBoldLabel);
-                        EditorGUILayout.PropertyField(attackIncreaseValue);
+                        EditorGUILayout.PropertyField(_attackIncreaseValue);
                     }
                 }
 
 
 
                 EditorGUILayout.Space();
-                showCost = EditorGUILayout.Foldout(showCost, "코스트 및 부가 효과", true);
-                if (showCost)
+                _showCost = EditorGUILayout.Foldout(_showCost, "코스트 및 부가 효과", true);
+                if (_showCost)
                 {
-                    EditorGUILayout.PropertyField(hpCost);
-                    EditorGUILayout.PropertyField(mpCost);
-                    EditorGUILayout.PropertyField(canMove);
-                    EditorGUILayout.PropertyField(onSuperArmor);
-                    EditorGUILayout.PropertyField(useKnockBack);
-                    if (aData.useKnockBack)
+                    EditorGUILayout.PropertyField(_hpCost);
+                    EditorGUILayout.PropertyField(_mpCost);
+                    EditorGUILayout.PropertyField(_canMove);
+                    EditorGUILayout.PropertyField(_onSuperArmor);
+                    EditorGUILayout.PropertyField(_useKnockBack);
+                    if (aData.UseKnockBack)
                     {
-                        EditorGUILayout.PropertyField(knockBackForce);
+                        EditorGUILayout.PropertyField(_knockBackForce);
                     }
                 }
                 EditorGUILayout.Space();
-                showEffect = EditorGUILayout.Foldout(showEffect, "스킬 연출", true);
-                if (showEffect)
+                _showEffect = EditorGUILayout.Foldout(_showEffect, "스킬 연출", true);
+                if (_showEffect)
                 {
-                    EditorGUILayout.PropertyField(doAttackCasting);
-                    if (aData.attackCasting)
+                    EditorGUILayout.PropertyField(_doAttackCasting);
+                    if (aData.AttackCasting)
                     {
-                        EditorGUILayout.PropertyField(attackCastingTime);
+                        EditorGUILayout.PropertyField(_attackCastingTime);
                     }
 
-                    EditorGUILayout.PropertyField(attackEffectName);
-                    EditorGUILayout.PropertyField(attackEffectPos);
-                    EditorGUILayout.PropertyField(hitEffectName);
-                    EditorGUILayout.PropertyField(hitEffectPos);
-                    EditorGUILayout.PropertyField(attackSFX);
-                    if (attackSFX != null)
+                    EditorGUILayout.PropertyField(_attackEffectName);
+                    EditorGUILayout.PropertyField(_attackEffectPos);
+                    EditorGUILayout.PropertyField(_hitEffectName);
+                    EditorGUILayout.PropertyField(_hitEffectPos);
+                    EditorGUILayout.PropertyField(_attackSFX);
+                    if (_attackSFX != null)
                     {
                         if (GUILayout.Button("효과음 재생"))
                         {
@@ -494,27 +492,27 @@ public class AttackDataCustomInspector : Editor
                                 Debug.LogWarning("플레이모드에선 재생할 수 없습니다.");
                                 return;
                             }
-                            if (Application.isPlaying == false && aData.attackSFX == null)
+                            if (Application.isPlaying == false && aData.AttackSFX == null)
                             {
-                                Debug.LogWarning($"skillSFX가 {aData.attackSFX} 입니다.");
+                                Debug.LogWarning($"skillSFX가 {aData.AttackSFX} 입니다.");
                                 return;
                             }
-                            OnEditorModePlayClip(aData.attackSFX);
-                            Debug.Log($"효과음 재생 {aData.attackSFX}");
+                            OnEditorModePlayClip(aData.AttackSFX);
+                            Debug.Log($"효과음 재생 {aData.AttackSFX}");
                         }
                     }
                 }
 
                 EditorGUILayout.Space();
-                showCamera = EditorGUILayout.Foldout(showCamera, "카메라 연출", true);
-                if (showCamera)
+                _showCamera = EditorGUILayout.Foldout(_showCamera, "카메라 연출", true);
+                if (_showCamera)
                 {
-                    EditorGUILayout.PropertyField(useCameraShake);
-                    if (aData.useCameraShake)
+                    EditorGUILayout.PropertyField(_useCameraShake);
+                    if (aData.UseCameraShake)
                     {
-                        EditorGUILayout.PropertyField(shakeCameraForce);
-                        EditorGUILayout.PropertyField(shakeCameraDir);
-                        EditorGUILayout.PropertyField(shakeCameraDuration);
+                        EditorGUILayout.PropertyField(_shakeCameraForce);
+                        EditorGUILayout.PropertyField(_shakeCameraDir);
+                        EditorGUILayout.PropertyField(_shakeCameraDuration);
                     }
                 }
                 break;
@@ -522,8 +520,8 @@ public class AttackDataCustomInspector : Editor
         }
         serializedObject.ApplyModifiedProperties();
     }
+
     private static MethodInfo playClipMethod;
-    
     // 에디터모드에서 효과음 재생
     private static void OnEditorModePlayClip(AudioClip clip)
     {

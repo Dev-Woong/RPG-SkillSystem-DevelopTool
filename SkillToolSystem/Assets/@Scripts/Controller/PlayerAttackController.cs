@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class PlayerAttackController : DamageAbleBase,IDamageAble
 {
-    public DamageHandler damageHandler;
+    [SerializeField] private DamageHandler _damageHandler;
     
     public int curHP = 100;
-    [SerializeField] private AttackData[] attackDatas;
-    [SerializeField] private Transform[] attackEffectPos;
+    [SerializeField] private AttackData[] _attackDatas;
+    [SerializeField] private Transform[] _attackEffectPos;
     void Start()
     {
-        damageHandler = GetComponent<DamageHandler>();
+        _damageHandler = GetComponent<DamageHandler>();
     }
     public override void OnDamage(float damage, WeaponType wType)
     {
@@ -19,7 +19,7 @@ public class PlayerAttackController : DamageAbleBase,IDamageAble
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            damageHandler.CreateMeleeAttackBox(attackDatas[0], attackEffectPos[0], false);
+            _damageHandler.CreateMeleeAttackBox(_attackDatas[0], _attackEffectPos[0], false);
         }
     }
     // Update is called once per frame

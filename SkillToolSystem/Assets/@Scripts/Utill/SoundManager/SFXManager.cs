@@ -2,25 +2,25 @@ using UnityEngine;
 
 public class SFXManager : MonoBehaviour
 {
-    [SerializeField] private AudioSource sfxSource;
-    public static SFXManager Instance { get; private set; }
+    [SerializeField] private AudioSource _sfxSource;
+    public static SFXManager s_Instance { get; private set; }
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
+        if (s_Instance != null && s_Instance != this)
         {
             Destroy(gameObject);
             return;
         }
 
-        Instance = this;
+        s_Instance = this;
         DontDestroyOnLoad(gameObject);
     }
 
     public void PlaySFX(AudioClip clip)
     {
         if (clip != null)
-            sfxSource.PlayOneShot(clip);
+            _sfxSource.PlayOneShot(clip);
 
     }
 }

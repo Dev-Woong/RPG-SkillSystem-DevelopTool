@@ -204,12 +204,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 125432687}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 464698725}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &464698722
 GameObject:
@@ -348,6 +348,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 125432690}
   - {fileID: 1357080757}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -363,8 +364,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e827cf6338920c4699681a6d71424f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onKnockBack: 0
-  isDie: 0
+  OnKnockBack: 0
+  OnSuperArmor: 0
+  IsDie: 0
+  VectorZ: 0
 --- !u!114 &464698727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -377,13 +380,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c134197aa4759454097b1c9e3d090b76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageAble: 1
-  damageHandler: {fileID: 0}
-  bc: {fileID: 0}
+  DamageAble: 1
+  _damageHandler: {fileID: 0}
   curHP: 100
-  attackDatas:
+  _attackDatas:
   - {fileID: 11400000, guid: b8c0fa56a6fbcf144b08a50cc8d25f50, type: 2}
-  attackEffectPos:
+  _attackEffectPos:
   - {fileID: 1357080757}
 --- !u!114 &464698728
 MonoBehaviour:
@@ -397,8 +399,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 729e5bdec53bd77419fe943037d4c80e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boxCollider2D: {fileID: 0}
-  minYPos: 0
 --- !u!50 &464698729
 Rigidbody2D:
   serializedVersion: 5
@@ -438,7 +438,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07894c6e70d8bab459289266fd7a0a82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
+  Speed: 2
 --- !u!1 &1103826437
 GameObject:
   m_ObjectHideFlags: 0
@@ -661,8 +661,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c4e8abc45b63b4dbce204dcc45ca6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageAble: 1
-  curHP: 100
+  DamageAble: 1
+  CurHp: 100
 --- !u!114 &1156091060
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -675,8 +675,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e827cf6338920c4699681a6d71424f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onKnockBack: 1
-  isDie: 0
+  OnKnockBack: 0
+  OnSuperArmor: 0
+  IsDie: 0
+  VectorZ: 0
 --- !u!61 &1156091061
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -884,8 +886,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c4e8abc45b63b4dbce204dcc45ca6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageAble: 1
-  curHP: 100
+  DamageAble: 1
+  CurHp: 100
 --- !u!114 &1393713381
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -898,8 +900,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e827cf6338920c4699681a6d71424f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onKnockBack: 1
-  isDie: 0
+  OnKnockBack: 0
+  OnSuperArmor: 0
+  IsDie: 0
+  VectorZ: 0
 --- !u!61 &1393713382
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1192,8 +1196,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c4e8abc45b63b4dbce204dcc45ca6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageAble: 1
-  curHP: 100
+  DamageAble: 1
+  CurHp: 100
 --- !u!114 &1443390317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1206,13 +1210,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e827cf6338920c4699681a6d71424f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onKnockBack: 1
-  isDie: 0
+  OnKnockBack: 0
+  OnSuperArmor: 0
+  IsDie: 0
+  VectorZ: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 125432690}
   - {fileID: 464698725}
   - {fileID: 1443390312}
   - {fileID: 1393713384}
