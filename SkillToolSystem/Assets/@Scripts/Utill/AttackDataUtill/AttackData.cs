@@ -30,7 +30,7 @@ public enum AttackSpecialAbility
     Buff,
     DeBuff
 }
-public enum AttackElement
+public enum Element
 {
     None,
     Dark,
@@ -64,7 +64,7 @@ public class AttackData : ScriptableObject
     public float Damage;
     public int HitCount;
     public AttackHitType AttackHitType;
-    public AttackElement AttackElement;
+    public Element AttackElement;
     public AttackSpecialAbility SpecialAbility;
     public SetBuffType SetBuffType; 
     public SetDebuffType SetDebuffType;

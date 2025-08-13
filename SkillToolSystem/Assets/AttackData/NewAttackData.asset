@@ -23,7 +23,7 @@ MonoBehaviour:
   CoolTime: 0
   Damage: 20
   HitCount: 1
-  AttackHitType: 1
+  AttackHitType: 0
   AttackElement: 0
   SpecialAbility: 0
   SetBuffType: 0
