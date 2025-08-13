@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 using UnityEngine.VFX;
 
 public class DamageHandler : MonoBehaviour
@@ -17,7 +18,6 @@ public class DamageHandler : MonoBehaviour
     public void Start()
     {
         _boxCollider2D = GetComponent<BoxCollider2D>();
-        Debug.Log(_minYPos);
     }
     public void CreateMeleeAttackBox(AttackData attackData,Transform AttackEffectPoint,bool attackEffectFlip)
     {
@@ -30,7 +30,7 @@ public class DamageHandler : MonoBehaviour
         _minYPos = _boxCollider2D.bounds.min.y;
         _maxXPos = _boxCollider2D.bounds.center.x;
         _hitStartPos = transform.right*transform.localScale.x + new Vector3(_maxXPos+(attackData.AttackRange.x / 2 * transform.localScale.x) + (attackData.StartAttackPoint.x * transform.localScale.x), _minYPos +(attackData.AttackRange.y/2) + attackData.StartAttackPoint.y, 0);
-        Debug.Log(_hitStartPos);
+        
         Collider2D[] hits = Physics2D.OverlapBoxAll(_hitStartPos, attackData.AttackRange, 0, attackData.TargetLayer);
         Debug.DrawLine(_hitStartPos,attackData.AttackRange, Color.red, 2f);
         if (attackData.AttackHitType == AttackHitType.MultiTarget)
@@ -77,50 +77,57 @@ public class DamageHandler : MonoBehaviour
     }
     IEnumerator HitDamage(IDamageAble dmg, AttackData attackData, GameObject target, Transform AttackEffectPoint, bool attackEffectFlip)
     {
-        int currentHits = 0;
-        Vector3 effectPos = new Vector3(attackData.EffectPos.x, attackData.EffectPos.y, 0);
+        if (attackData.HitCount >= 1)
+        {
+            int currentHits = 0;
+            Vector3 effectPos = new Vector3(attackData.EffectPos.x, attackData.EffectPos.y, 0);
 
-        if (attackData.AttackEffectPrefabName != "")
-        {
-            var attackEffect = ObjectPoolManager.instance.GetObject(attackData.AttackEffectPrefabName);
-            if (attackEffectFlip == true)
+            if (attackData.AttackEffectPrefabName != "")
             {
-                attackEffect.GetComponent<SpriteRenderer>().flipX = true;
-            }
-            attackEffect.transform.position = AttackEffectPoint.position;
-        }
-        else yield return null;
-        if (target.GetComponent<ObjectStatus>().OnKnockBack == true && target.GetComponent<ObjectStatus>().OnSuperArmor ==false) // 공격 넉백 프로세스
-        {
-            float xKnockbackForce = attackData.KnockBackForce.x;
-            target.GetComponent<Rigidbody2D>().linearVelocity = Vector3.zero;
-            if (target.transform.position.x < transform.position.x)
-            {
-                xKnockbackForce = -xKnockbackForce;
-            }
-            target.GetComponent<Rigidbody2D>().AddForce(new Vector3(xKnockbackForce, attackData.KnockBackForce.y, 0), ForceMode2D.Impulse);
-        }
-        while (currentHits < attackData.HitCount)
-        {
-            dmg.TakeDamage((attackData.Damage), attackData.WeaponType);
-            if (attackData.HitEffectPrefabName != "")
-            {
-                if (target.GetComponent<ObjectStatus>().IsDie == false)
+                var attackEffect = ObjectPoolManager.instance.GetObject(attackData.AttackEffectPrefabName);
+                if (attackEffectFlip == true)
                 {
-                    var effect = ObjectPoolManager.instance.GetObject(attackData.HitEffectPrefabName);
-
-                    effect.transform.position = target.transform.position + effectPos;
-                    if (transform.localScale.x == -1)
-                    {
-                        effect.GetComponent<SpriteRenderer>().flipX = true;
-                    }
+                    attackEffect.GetComponent<SpriteRenderer>().flipX = true;
                 }
-                else yield return null;
+                attackEffect.transform.position = AttackEffectPoint.position;
             }
             else yield return null;
-            currentHits++;
-            yield return _interval;
+            if (target.GetComponent<ObjectStatus>().OnKnockBack == true && target.GetComponent<ObjectStatus>().OnSuperArmor == false) // 공격 넉백 프로세스
+            {
+                float xKnockbackForce = attackData.KnockBackForce.x;
+                target.GetComponent<Rigidbody2D>().linearVelocity = Vector3.zero;
+                if (target.transform.position.x < transform.position.x)
+                {
+                    xKnockbackForce = -xKnockbackForce;
+                }
+                target.GetComponent<Rigidbody2D>().AddForce(new Vector3(xKnockbackForce, attackData.KnockBackForce.y, 0), ForceMode2D.Impulse);
+            }
+            while (currentHits < attackData.HitCount)
+            {
+                dmg.TakeDamage((attackData.Damage), attackData.WeaponType);
+                if (attackData.HitEffectPrefabName != "")
+                {
+                    if (target.GetComponent<ObjectStatus>().IsDie == false)
+                    {
+                        var effect = ObjectPoolManager.instance.GetObject(attackData.HitEffectPrefabName);
+
+                        effect.transform.position = target.transform.position + effectPos;
+                        if (transform.localScale.x == -1)
+                        {
+                            effect.GetComponent<SpriteRenderer>().flipX = true;
+                        }
+                    }
+                    else yield return null;
+                }
+                else yield return null;
+                currentHits++;
+                yield return _interval;
+            }
+            yield return new WaitForSeconds(0.4f);
         }
-        yield return new WaitForSeconds(0.4f);
+        else
+        {
+            Debug.LogWarning("공격 데이터의 HitCount를 설정해주세요 , , ,");
+        }
     }
 }

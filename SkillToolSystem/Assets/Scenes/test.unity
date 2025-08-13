@@ -675,7 +675,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e827cf6338920c4699681a6d71424f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnKnockBack: 0
+  OnKnockBack: 1
   OnSuperArmor: 0
   IsDie: 0
   VectorZ: 0
@@ -900,7 +900,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e827cf6338920c4699681a6d71424f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnKnockBack: 0
+  OnKnockBack: 1
   OnSuperArmor: 0
   IsDie: 0
   VectorZ: 0
@@ -1210,7 +1210,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e827cf6338920c4699681a6d71424f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnKnockBack: 0
+  OnKnockBack: 1
   OnSuperArmor: 0
   IsDie: 0
   VectorZ: 0

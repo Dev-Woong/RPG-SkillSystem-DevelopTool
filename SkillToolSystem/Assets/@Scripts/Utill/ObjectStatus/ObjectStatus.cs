@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ObjectStatus : MonoBehaviour
 {
-    public bool OnKnockBack = false;
+    public bool OnKnockBack = true;
     public bool OnSuperArmor = false;
     public bool IsDie=false;
     public float VectorZ = 0;

@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class EnemyController : DamageAbleBase, IDamageAble
 {
-    private BoxCollider2D _boxCollider;
     public int CurHp = 100;
     public override void OnDamage(float damage, WeaponType wType)
     {

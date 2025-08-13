@@ -22,7 +22,7 @@ MonoBehaviour:
   AttackName: 
   CoolTime: 0
   Damage: 20
-  HitCount: 0
+  HitCount: 1
   AttackHitType: 1
   AttackElement: 0
   SpecialAbility: 0
